@@ -1,2 +1,5 @@
 /KendamaShop/KendamaShop/Web.config
+/KendamaShop/KendamaShop/bin
+/KendamaShop/KendamaShop/obj
+/KendamaShop/KendamaShop/App_Data
 .vs
