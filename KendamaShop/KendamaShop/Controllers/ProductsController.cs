@@ -8,6 +8,8 @@ namespace KendamaShop.Controllers
 {
     public class ProductsController : Controller
     {
+        public Models.AppContext db = new Models.AppContext();
+
         // GET: Products
         public ActionResult Index()
         {
