@@ -10,6 +10,8 @@ namespace KendamaShop.Models
     {
         public AppContext() : base("DBConnectionString")
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AppContext, 
+                                    KendamaShop.Migrations.Configuration>("DBConnectionString"));
         }
 
         public DbSet<Product> Products { get; set; }
