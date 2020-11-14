@@ -188,10 +188,13 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\Products\Show.cshtml" />
+    <Content Include="Views\Products\New.cshtml" />
+    <Content Include="Views\Products\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Orders\" />
-    <Folder Include="Views\Products\" />
     <Folder Include="Views\Reviews\" />
   </ItemGroup>
   <ItemGroup>

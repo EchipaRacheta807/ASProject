@@ -1,0 +1,20 @@
+﻿@model KendamaShop.Models.Product
+
+<a class="btn btn-info" href="/Products/Index">Back to products page</a>
+
+<div class="panel panel-default">
+    <div class="panel-heading">@Model.Title</div>
+    <div class="panel-body">
+        Product description:
+        <strong>@Model.Description</strong>
+        <br />
+        Product price:
+        <strong>@Model.Price</strong>
+        Product rating:
+        <strong>@Model.Rating</strong>
+    </div>
+    <div class="panel-footer">
+        <a class="btn btn-sm btn-succes" href="/Products/Show/@Model.ProductId">Show product</a>
+    </div>
+</div>
+
