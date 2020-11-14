@@ -18,3 +18,46 @@
     </div>
 </div>
 
+<a class="btn btn-sm btn-info" href="/Reviews/New">Add review</a>
+
+@foreach(var review in Model.Reviews)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">@review.Stars</div>
+        <div class="panel-body">
+            Data: <strong>@review.Date</strong>
+            Content: <strong>@review.Content</strong>
+        </div>
+        <div class="panel-footer">
+            <a class="btn btn-sm btn-succes" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
+            <form method="post" action="/Reviews/Delete/@review.ReviewId">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button type="submit" class="btn btn-sm btn-danger">Delete Review</button>
+            </form>
+        </div>
+    </div>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="panel">
+                <form method="post" action="/Reviews/New">
+                    <div class="panel-body">
+                        <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                        <label name="Content">Review content</label>
+                        <br />
+                        <textarea class="form-control" name="Content"></textarea>
+                        <br />
+                        <label name="Stars">Stars:</label>
+                        <br />
+                        <input type="number" name="Stars" />
+
+                        <button class="btn btn-succes" type="submit">Post review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

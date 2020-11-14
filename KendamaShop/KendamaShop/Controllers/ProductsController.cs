@@ -24,6 +24,7 @@ namespace KendamaShop.Controllers
         public ActionResult Show(int id)
         {
             var product = db.Products.Find(id);
+
             return View(product);
         }
 

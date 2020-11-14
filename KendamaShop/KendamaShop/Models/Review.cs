@@ -14,6 +14,8 @@ namespace KendamaShop.Models
         [Required]
         public int ProductId { get; set; }
 
+        public virtual Product Product { get; set; }
+
         [Required]
         public int Stars { get; set; }
 

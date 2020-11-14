@@ -20,5 +20,7 @@ namespace KendamaShop.Models
         public float Price { get; set; }
 
         public float Rating { get; set; }
+
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }
