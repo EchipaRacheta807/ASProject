@@ -1,6 +1,8 @@
 ﻿@model KendamaShop.Models.Product
 
 <form method="post" action="/Products/Edit/@Model.ProductId">
+    @Html.ValidationSummary(false, "", new { @class = "text-danger"})
+
     @Html.HttpMethodOverride(HttpVerbs.Put)
 
     @Html.HiddenFor(m => m.ProductId)

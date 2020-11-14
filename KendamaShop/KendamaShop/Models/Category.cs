@@ -11,6 +11,13 @@ namespace KendamaShop.Models
         [Key]
         public int CategoryId { get; set; }
 
+        [StringLength(30)]
+        [DataType(DataType.Text)]
+        [Required]
+        public string CategoryName { get; set; }
+
         public int AdminId { get; set; }
+
+        //public ICollection<Product> Products { get; set; }
     }
 }

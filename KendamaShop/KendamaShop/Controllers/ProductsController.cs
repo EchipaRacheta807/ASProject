@@ -16,7 +16,10 @@ namespace KendamaShop.Controllers
         {
             var products = from prod in db.Products select prod;
             ViewBag.Products = products;
-
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+            }
             return View();
         }
 
@@ -43,7 +46,7 @@ namespace KendamaShop.Controllers
             {
                 db.Products.Add(product);
                 db.SaveChanges();
-
+                TempData["message"] = "The product was added to the database";
                 return RedirectToAction("Index");
             }
             catch (Exception e)
@@ -64,19 +67,22 @@ namespace KendamaShop.Controllers
         {
             try
             {
-                Product product = db.Products.Find(id);
-                
-                if (TryUpdateModel(product))
+                if (ModelState.IsValid)
                 {
-                    // Make sure the edit form contains all model properties
-                    product = requestProd;
-                    db.SaveChanges();
+                    Product product = db.Products.Find(id);
 
-                    return RedirectToAction("Index");
+                    if (TryUpdateModel(product))
+                    {
+                        // Make sure the edit form contains all model properties
+                        product = requestProd;
+                        db.SaveChanges();
+                        TempData["message"] = "The product info was modified!";
+                    }
+                    return Redirect("/Products/Show/" + product.ProductId);
                 }
                 else
                 {
-                    return RedirectToAction("Index");
+                    return View(requestProd);
                 }
             }
             catch (Exception e)
@@ -91,7 +97,7 @@ namespace KendamaShop.Controllers
             Product product = db.Products.Find(id);
             db.Products.Remove(product);
             db.SaveChanges();
-
+            TempData["message"] = "The product was deleted!";
             return RedirectToAction("Index");
         }
     }

@@ -19,7 +19,7 @@ namespace KendamaShop.Controllers
             {
                 db.Reviews.Add(review);
                 db.SaveChanges();
-
+                TempData["message"] = "The reviews was added!";
                 return Redirect("/Products/Show/" + review.ProductId.ToString());
             }
             catch (Exception e)
@@ -37,28 +37,32 @@ namespace KendamaShop.Controllers
         }
 
         [HttpPut]
-        public ActionResult Edit(int id, Review requestProd)
+        public ActionResult Edit(int id, Review requestReview)
         {
+
             try
             {
-                Review review = db.Reviews.Find(id);
-
-                if (TryUpdateModel(review))
+                if (ModelState.IsValid)
                 {
-                    // Make sure the edit form contains all model properties
-                    review = requestProd;
-                    db.SaveChanges();
+                    Review review = db.Reviews.Find(id);
 
+                    if (TryUpdateModel(review))
+                    {
+                        // Make sure the edit form contains all model properties
+                        review = requestReview;
+                        db.SaveChanges();
+                        TempData["message"] = "The review was edited!";
+                    }
                     return Redirect("/Products/Show/" + review.ProductId.ToString());
                 }
                 else
                 {
-                    return Redirect("/Products/Show/" + review.ProductId.ToString());
+                    return View(requestReview);
                 }
             }
             catch (Exception e)
             {
-                return View();
+                return View(requestReview);
             }
         }
 
@@ -68,7 +72,7 @@ namespace KendamaShop.Controllers
             Review review = db.Reviews.Find(id);
             db.Reviews.Remove(review);
             db.SaveChanges();
-
+            TempData["message"] = "The review was edited!";
             return Redirect("/Products/Show/" + review.ProductId.ToString());
         }
     }

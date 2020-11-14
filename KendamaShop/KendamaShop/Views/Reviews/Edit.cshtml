@@ -1,6 +1,8 @@
 ﻿@model KendamaShop.Models.Review
 
 <form method="post" action="/Reviews/Edit/@Model.ReviewId">
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
     @Html.HttpMethodOverride(HttpVerbs.Put)
 
     @Html.HiddenFor(m => m.ReviewId)
