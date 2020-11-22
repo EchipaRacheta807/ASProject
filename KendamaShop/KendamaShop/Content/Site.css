@@ -22,12 +22,3 @@ select,
 textarea {
     max-width: 280px;
 }
-
-/* Fix validation message error */
-.field-validation-valid {
-    display: none;
-}
-
-.validation-summary-valid {
-    display: none;
-}
