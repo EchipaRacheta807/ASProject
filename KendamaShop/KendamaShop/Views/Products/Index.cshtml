@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Products Index";
+}
+<h1>@ViewBag.Message</h1>
+
+<h2>@ViewBag.Title</h2>
+
+<a class="btn btn-primary" href="/Products/New">Add product</a>
+
+@foreach (KendamaShop.Models.Product product in ViewBag.Products)
+{
+    <div class="panel panel-default">
+        @Html.Partial("ProductInfo", product)
+        @*<div class="panel-heading">@product.Title</div>
+        <div class="panel-body">
+        Product description:
+        <strong>@product.Description</strong>
+        <br />
+        Product price:
+        <strong>@product.Price</strong>
+        Product rating:
+        <strong>@product.Rating</strong>
+        </div>*@
+        <div class="panel-footer">
+            <a class="btn btn-sm btn-succes" href="/Products/Show/@product.ProductId">Show product</a>
+        </div>
+    </div>
+}
