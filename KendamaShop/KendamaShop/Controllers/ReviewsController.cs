@@ -11,16 +11,30 @@ namespace KendamaShop.Controllers
     {
         public ApplicationDbContext db = new ApplicationDbContext();
 
+        // GET: Reviews
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult New(Review review)
         {
             review.Date = DateTime.Now;
             try
             {
-                db.Reviews.Add(review);
-                db.SaveChanges();
-                TempData["message"] = "The reviews was added!";
-                return Redirect("/Products/Show/" + review.ProductId.ToString());
+                if (ModelState.IsValid)
+                {
+                    db.Reviews.Add(review);
+                    db.SaveChanges();
+                    TempData["message"] = "The reviews was added!";
+                    return Redirect("/Products/Show/" + review.ProductId.ToString());
+                }
+                else
+                {
+                    return Redirect("/Products/Show/" + review.ProductId.ToString());
+                }
+                
             }
             catch (Exception e)
             {
@@ -32,7 +46,6 @@ namespace KendamaShop.Controllers
         public ActionResult Edit(int id)
         {
             Review review = db.Reviews.Find(id);
-
             return View(review);
         }
 
@@ -50,6 +63,7 @@ namespace KendamaShop.Controllers
                     {
                         // Make sure the edit form contains all model properties
                         review = requestReview;
+                        review.Date = DateTime.Now;
                         db.SaveChanges();
                         TempData["message"] = "The review was edited!";
                     }

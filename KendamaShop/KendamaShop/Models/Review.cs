@@ -12,20 +12,21 @@ namespace KendamaShop.Models
         [Key]
         public int ReviewId { get; set; }
 
-        [Required]
-        public int ProductId { get; set; }
-
-        [ForeignKey("ProductId")]
-        public virtual Product Product { get; set; }
-
-        [Required]
-        public int Stars { get; set; }
-
-        [Required]
+        [Required(ErrorMessage = "Content field is required!")]
         [DataType(DataType.MultilineText)]
         public string Content { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Number of stars is required")]
+        public int Stars { get; set; }
+
         public DateTime Date { get; set; }
+
+        public int ProductId { get; set; }
+
+        public virtual Product Product { get; set; }
+
+        public string UserId { get; set; }
+
+        public virtual ApplicationUser User { get; set; }
     }
 }

@@ -13,11 +13,11 @@ namespace KendamaShop.Models
 
         [StringLength(30)]
         [DataType(DataType.Text)]
-        [Required]
+        [Required(ErrorMessage = "Category Name field is required!")]
         public string CategoryName { get; set; }
 
-        public int AdminId { get; set; }
+        //public int AdminId { get; set; }
 
-        //public ICollection<Product> Products { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

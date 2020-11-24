@@ -13,7 +13,7 @@ namespace KendamaShop.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202011230900101_Initial"; }
+            get { return "202011242216047_Initial"; }
         }
         
         string IMigrationMetadata.Source
