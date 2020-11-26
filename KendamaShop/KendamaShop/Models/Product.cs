@@ -21,7 +21,7 @@ namespace KendamaShop.Models
         // [ForeignKey("CategoryId")]
         // public virtual Category Category { get; set; }
 
-        [StringLength(30)]
+        [StringLength(60)]
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "Title field is required")]
         public string Title { get; set; }

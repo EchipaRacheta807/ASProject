@@ -15,7 +15,7 @@
     @Html.TextArea("Description", null, new { @class = "form-control " })
     <br /> <br />
 
-    @Html.Label("Price", "Product price")
+    @Html.Label("Price", "Product price ($)")
     <br />
     @Html.EditorFor(m => m.Price, new
     {
@@ -30,7 +30,7 @@
     })
     <br /> <br />
 
-    @Html.Label("Rating", "Product rating")
+    @Html.Label("Rating", "Product rating (0-5 stars)")
     <br />
     @Html.EditorFor(m => m.Rating, new
     {

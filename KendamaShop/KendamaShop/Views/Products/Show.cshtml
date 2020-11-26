@@ -7,26 +7,26 @@
 <div class="panel panel-default">
     @Html.Partial("ProductInfo", Model)
     <div class="panel-footer">
-        <a class="btn btn-sm btn-succes" href="/Products/Edit/@Model.ProductId">Edit product</a>
+        <a class="btn btn-sm btn-succes pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
         <form method="post" action="/Products/Delete/@Model.ProductId">
             @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <button class="btn btn-sm btn-danger" type="submit">Delete product</button>
+            <button class="btn btn-sm btn-danger pull-right" type="submit">Delete product</button>
         </form>
+        <div class="clearfix"></div>
     </div>
 </div>
-
-<a class="btn btn-sm btn-info" href="/Reviews/New">Add review</a>
 
 @foreach(KendamaShop.Models.Review review in Model.Reviews)
 {
     <div class="panel panel-default">
         @Html.Partial("ReviewInfo", review)
         <div class="panel-footer">
-            <a class="btn btn-sm btn-succes" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
+            <a class="btn btn-sm btn-succes pull-left" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
             <form method="post" action="/Reviews/Delete/@review.ReviewId">
                 @Html.HttpMethodOverride(HttpVerbs.Delete)
-                <button type="submit" class="btn btn-sm btn-danger">Delete Review</button>
+                <button type="submit" class="btn btn-sm btn-danger pull-right">Delete Review</button>
             </form>
+            <div class="clearfix"></div>
         </div>
     </div>
 }
@@ -45,9 +45,9 @@
                         <br />
                         <textarea class="form-control" name="Content"></textarea>
                         <br />
-                        <label name="Stars">Stars:</label>
+                        <label name="Stars">Stars (0-5 stars):</label>
                         <br />
-                        <input type="number" name="Stars" />
+                        <input type="number" name="Stars" min="0" max="5" />
 
                         <button class="btn btn-succes" type="submit">Post review</button>
                     </div>
