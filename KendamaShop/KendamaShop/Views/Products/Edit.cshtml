@@ -1,5 +1,7 @@
 ﻿@model KendamaShop.Models.Product
 
+<h1>@ViewBag.Message</h1>
+
 <form method="post" action="/Products/Edit/@Model.ProductId">
     @Html.ValidationSummary(false, "", new { @class = "text-danger"})
 

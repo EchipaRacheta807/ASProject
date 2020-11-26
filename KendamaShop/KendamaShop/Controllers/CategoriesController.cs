@@ -29,6 +29,10 @@ namespace KendamaShop.Controllers
         public ActionResult Show(int id)
         {
             Category category = db.Categories.Find(id);
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+            }
             return View(category);
         }
 
@@ -46,7 +50,7 @@ namespace KendamaShop.Controllers
                 {
                     db.Categories.Add(cat);
                     db.SaveChanges();
-                    TempData["message"] = "Categoria a fost adaugata!";
+                    TempData["message"] = "New category was added!";
                     return RedirectToAction("Index");
                 }
                 else
@@ -73,13 +77,11 @@ namespace KendamaShop.Controllers
             {
                 Category category = db.Categories.Find(id);
 
-                //throw new Exception();
-
                 if (TryUpdateModel(category))
                 {
                     category.CategoryName = requestCategory.CategoryName;
                     db.SaveChanges();
-                    TempData["message"] = "Categoria a fost modificata!";
+                    TempData["message"] = "The category was modified!";
                     return RedirectToAction("Index");
                 }
 
@@ -96,7 +98,7 @@ namespace KendamaShop.Controllers
         {
             Category category = db.Categories.Find(id);
             db.Categories.Remove(category);
-            TempData["message"] = "Categoria a fost stearsa!";
+            TempData["message"] = "Category was deleted!";
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -17,31 +17,6 @@ namespace KendamaShop.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult New(Review review)
-        {
-            review.Date = DateTime.Now;
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    db.Reviews.Add(review);
-                    db.SaveChanges();
-                    TempData["message"] = "The reviews was added!";
-                    return Redirect("/Products/Show/" + review.ProductId.ToString());
-                }
-                else
-                {
-                    return Redirect("/Products/Show/" + review.ProductId.ToString());
-                }
-                
-            }
-            catch (Exception e)
-            {
-                return Redirect("/Products/Show/" + review.ProductId.ToString());
-            }
-        }
-
         // GET
         public ActionResult Edit(int id)
         {
@@ -62,8 +37,8 @@ namespace KendamaShop.Controllers
                     if (TryUpdateModel(review))
                     {
                         // Make sure the edit form contains all model properties
-                        review = requestReview;
-                        review.Date = DateTime.Now;
+                        review.Content = requestReview.Content;
+                        review.Stars = requestReview.Stars;
                         db.SaveChanges();
                         TempData["message"] = "The review was edited!";
                     }
@@ -86,7 +61,7 @@ namespace KendamaShop.Controllers
             Review review = db.Reviews.Find(id);
             db.Reviews.Remove(review);
             db.SaveChanges();
-            TempData["message"] = "The review was edited!";
+            TempData["message"] = "The review was deleted!";
             return Redirect("/Products/Show/" + review.ProductId.ToString());
         }
     }

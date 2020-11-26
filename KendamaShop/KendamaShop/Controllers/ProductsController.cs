@@ -28,10 +28,39 @@ namespace KendamaShop.Controllers
         public ActionResult Show(int id)
         {
             var product = db.Products.Find(id);
-
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+            }
             return View(product);
         }
 
+        [HttpPost]
+        public ActionResult Show(Review review)
+        {
+            review.Date = DateTime.Now;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Reviews.Add(review);
+                    db.SaveChanges();
+                    TempData["message"] = "The review was added!";
+                    return Redirect("/Products/Show/" + review.ProductId.ToString());
+                }
+                else
+                {
+                    Product prod = db.Products.Find(review.ProductId);
+                    return View(prod);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Product prod = db.Products.Find(review.ProductId);
+                return View(prod);
+            }
+        }
 
         public ActionResult New()
         {
@@ -89,7 +118,11 @@ namespace KendamaShop.Controllers
                     if (TryUpdateModel(product))
                     {
                         // Make sure the edit form contains all model properties
-                        product = requestProd;
+                        product.Title = requestProd.Title;
+                        product.Description = requestProd.Description;
+                        product.Price = requestProd.Price;
+                        product.Rating = requestProd.Rating;
+                        product.Categ = requestProd.Categ;
                         db.SaveChanges();
                         TempData["message"] = "The product info was modified!";
                     }
