@@ -62,8 +62,9 @@ namespace KendamaShop.Controllers
 
             try
             {
-                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                ApplicationDbContext context = new ApplicationDbContext();
+                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
 
                 if (TryUpdateModel(user))
@@ -113,14 +114,16 @@ namespace KendamaShop.Controllers
         [HttpDelete]
         public ActionResult Delete(string id)
         {
-            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            ApplicationDbContext context = new ApplicationDbContext();
+
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
             var user = UserManager.Users.FirstOrDefault(u => u.Id == id);
 
             var products = db.Products.Where(a => a.UserId == id);
-            foreach (var prod in products)
+            foreach (var product in products)
             {
-                db.Products.Remove(prod);
+                db.Products.Remove(product);
 
             }
 

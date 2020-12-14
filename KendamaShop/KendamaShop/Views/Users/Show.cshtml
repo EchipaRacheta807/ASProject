@@ -28,7 +28,7 @@
 
 </div>
 
-@if ((string)Model.Id != ViewBag.utilizatorCurent)
+@if ((string)Model.Id != ViewBag.currentUser)
 {
     <div class="panel-footer">
         <a class="btn btn-success" href="/Users/Edit/@Model.Id">Edit user</a>
