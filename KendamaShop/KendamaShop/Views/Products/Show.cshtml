@@ -5,43 +5,39 @@
 <a class="btn btn-info" href="/Products/Index">Back to products page</a>
 
 <div class="panel panel-default">
-    <div class="panel-heading">@Model.Title</div>
-    <div class="panel-body">
-        Product description:
-        <strong>@Model.Description</strong>
-        <br />
-        Product price:
-        <strong>@Model.Price</strong>
-        Product rating:
-        <strong>@Model.Rating</strong>
-    </div>
+    @Html.Partial("ProductInfo", Model)
+    @if ((ViewBag.isPartner && ViewBag.currentUser == Model.UserId) || ViewBag.isAdmin)
+    {
     <div class="panel-footer">
-        <a class="btn btn-sm btn-succes" href="/Products/Edit/@Model.ProductId">Edit product</a>
-        <form method="post" action="/Products/Delete/@Model.ProductId">
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <button class="btn btn-sm btn-danger" type="submit">Delete product</button>
-        </form>
+        <a class="btn btn-sm btn-succes pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
+        @using (Html.BeginForm(actionName: "Delete", controllerName: "Products"))
+        {
+            @Html.Hidden("ProductId");
+            @Html.HttpMethodOverride(HttpVerbs.Delete);
+            <button class="btn btn-sm btn-danger pull-right" type="submit">Delete product</button>
+        }
+        <div class="clearfix"></div>
     </div>
+    }
 </div>
 
-<a class="btn btn-sm btn-info" href="/Reviews/New">Add review</a>
-
-@foreach(var review in Model.Reviews)
+@foreach(KendamaShop.Models.Review review in Model.Reviews)
 {
-    <div class="panel panel-default">
-        <div class="panel-heading">@review.Stars</div>
-        <div class="panel-body">
-            Data: <strong>@review.Date</strong>
-            Content: <strong>@review.Content</strong>
-        </div>
+<div class="panel panel-default">
+    @Html.Partial("ReviewInfo", review)
+    @if (ViewBag.isAdmin || review.UserId == ViewBag.currentUser)
+    {
         <div class="panel-footer">
-            <a class="btn btn-sm btn-succes" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
+            <a class="btn btn-sm btn-succes pull-left" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
             <form method="post" action="/Reviews/Delete/@review.ReviewId">
                 @Html.HttpMethodOverride(HttpVerbs.Delete)
-                <button type="submit" class="btn btn-sm btn-danger">Delete Review</button>
+                <button type="submit" class="btn btn-sm btn-danger pull-right">Delete Review</button>
             </form>
+            <div class="clearfix"></div>
         </div>
-    </div>
+    }
+
+</div>
 }
 
 <div class="container">
@@ -49,7 +45,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <div class="panel">
-                <form method="post" action="/Reviews/New">
+                <form method="post" action="/Products/Show">
                     <div class="panel-body">
                         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
@@ -58,9 +54,9 @@
                         <br />
                         <textarea class="form-control" name="Content"></textarea>
                         <br />
-                        <label name="Stars">Stars:</label>
+                        <label name="Stars">Stars (0-5 stars):</label>
                         <br />
-                        <input type="number" name="Stars" />
+                        <input type="number" name="Stars" min="0" max="5" />
 
                         <button class="btn btn-succes" type="submit">Post review</button>
                     </div>

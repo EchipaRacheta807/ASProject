@@ -6,9 +6,8 @@
     @Html.HttpMethodOverride(HttpVerbs.Put)
 
     @Html.HiddenFor(m => m.ReviewId)
-    @Html.HiddenFor(m => m.ProductId)
 
-    @Html.Label("Stars", "Review stars")
+    @Html.Label("Stars", "Review stars (0-5 stars)")
     <br />
     @Html.EditorFor(m => m.Stars, new { htmlAtributes = new { @class = "form-control" } })
     <br /> <br />

@@ -1,4 +1,5 @@
 ﻿using KendamaShop.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,12 @@ namespace KendamaShop.Controllers
 {
     public class ProductsController : Controller
     {
-        public Models.AppContext db = new Models.AppContext();
+        public ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Products
         public ActionResult Index()
         {
-            var products = from prod in db.Products select prod;
+            var products = db.Products.Include("Category").Include("User");
             ViewBag.Products = products;
             if (TempData.ContainsKey("message"))
             {
@@ -27,58 +28,131 @@ namespace KendamaShop.Controllers
         public ActionResult Show(int id)
         {
             var product = db.Products.Find(id);
-
-            return View(product);
-        }
-
-        public ActionResult New()
-        {
-            Product product = new Product();
-
-
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+            }
+            SetAccessRights();
             return View(product);
         }
 
         [HttpPost]
-        public ActionResult New(Product product)
+        public ActionResult Show(Review review)
         {
+            review.Date = DateTime.Now;
             try
             {
-                db.Products.Add(product);
-                db.SaveChanges();
-                TempData["message"] = "The product was added to the database";
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Reviews.Add(review);
+                    db.SaveChanges();
+                    TempData["message"] = "The review was added!";
+                    return Redirect("/Products/Show/" + review.ProductId.ToString());
+                }
+                else
+                {
+                    Product prod = db.Products.Find(review.ProductId);
+                    SetAccessRights();
+                    return View(prod);
+                }
+
             }
             catch (Exception e)
             {
+                Product prod = db.Products.Find(review.ProductId);
+                SetAccessRights();
+                return View(prod);
+            }
+        }
+
+        [Authorize(Roles = "Partner,Admin")]
+        public ActionResult New()
+        {
+            Product product = new Product();
+            product.Categ = GetAllCategories();
+            product.UserId = User.Identity.GetUserId();
+            return View(product);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Partner,Admin")]
+        public ActionResult New(Product product)
+        {
+            product.Date = DateTime.Now;
+            product.UserId = User.Identity.GetUserId();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Products.Add(product);
+                    db.SaveChanges();
+                    TempData["message"] = "The product was added to the database";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    product.Categ = GetAllCategories();
+                    return View(product);
+                }                
+            }
+            catch (Exception e)
+            {
+                product.Categ = GetAllCategories();
                 return View(product);
             }
         }
 
+        [Authorize(Roles = "Partner,Admin")]
         public ActionResult Edit(int id)
         {
             Product product = db.Products.Find(id);
+            product.Categ = GetAllCategories();
 
-            return View(product);
+            if (product.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+            {
+                return View(product);
+            }
+
+            else
+            {
+                TempData["message"] = "You don't have sufficient rights to modify the product!";
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPut]
+        [Authorize(Roles = "Partner,Admin")]
         public ActionResult Edit(int id, Product requestProd)
         {
+            requestProd.Categ = GetAllCategories();
+
             try
             {
                 if (ModelState.IsValid)
                 {
                     Product product = db.Products.Find(id);
 
-                    if (TryUpdateModel(product))
+                    if (product.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
                     {
-                        // Make sure the edit form contains all model properties
-                        product = requestProd;
-                        db.SaveChanges();
-                        TempData["message"] = "The product info was modified!";
+                        if (TryUpdateModel(product))
+                        {
+                            // Make sure the edit form contains all model properties
+                            product.Title = requestProd.Title;
+                            product.Description = requestProd.Description;
+                            product.Price = requestProd.Price;
+                            product.Rating = requestProd.Rating;
+                            product.Categ = requestProd.Categ;
+                            db.SaveChanges();
+                            TempData["message"] = "The product info was modified!";
+                        }
+                        return Redirect("/Products/Show/" + product.ProductId);
                     }
-                    return Redirect("/Products/Show/" + product.ProductId);
+                    else
+                    {
+                        TempData["message"] = "Insufficient rights to modify the product!";
+                        return RedirectToAction("Index");   
+                    }
+                    
                 }
                 else
                 {
@@ -92,13 +166,64 @@ namespace KendamaShop.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Partner,Admin")]
         public ActionResult Delete(int id)
         {
             Product product = db.Products.Find(id);
-            db.Products.Remove(product);
-            db.SaveChanges();
-            TempData["message"] = "The product was deleted!";
-            return RedirectToAction("Index");
+            if (product.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+            {
+                db.Products.Remove(product);
+                db.SaveChanges();
+                TempData["message"] = "The product was deleted!";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["message"] = "Insufficient rights to delete the product!";
+                return RedirectToAction("Index");
+            }
+            
+        }
+
+        [NonAction]
+        public IEnumerable<SelectListItem> GetAllCategories()
+        {
+            // generam o lista goala
+            var selectList = new List<SelectListItem>();
+
+            // extragem toate categoriile din baza de date
+            var categories = from cat in db.Categories
+                             select cat;
+
+            // iteram prin categorii
+            foreach (var category in categories)
+            {
+                // adaugam in lista elementele necesare pentru dropdown
+                selectList.Add(new SelectListItem
+                {
+                    Value = category.CategoryId.ToString(),
+                    Text = category.CategoryName.ToString()
+                });
+            }
+            /*
+            foreach (var category in categories)
+            {
+                var listItem = new SelectListItem();
+                listItem.Value = category.CategoryId.ToString();
+                listItem.Text = category.CategoryName.ToString();
+
+                selectList.Add(listItem);
+            }*/
+
+            // returnam lista de categorii
+            return selectList;
+        }
+
+        private void SetAccessRights()
+        {
+            ViewBag.isPartner = User.IsInRole("Partner");
+            ViewBag.isAdmin = User.IsInRole("Admin");
+            ViewBag.currentUser = User.Identity.GetUserId();
         }
     }
 }

@@ -23,11 +23,16 @@ textarea {
     max-width: 280px;
 }
 
-/* Fix validation message error */
-.field-validation-valid {
-    display: none;
+.navbar {
+    background-color: #dadada !important;
+    border: none !important;
+    box-shadow: 0 6px 12px #dadada !important;
 }
 
-.validation-summary-valid {
-    display: none;
+.navbar a {
+    color: #2c2c2c !important;
+}
+
+.navbar a:hover {
+    color: #5cb85c !important;
 }
