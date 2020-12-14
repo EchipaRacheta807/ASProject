@@ -37,10 +37,10 @@ namespace KendamaShop
                     UserManager.AddToRole(user.Id, "Admin");
                 }
             }
-            if (!roleManager.RoleExists("Editor"))
+            if (!roleManager.RoleExists("Partner"))
             {
                 var role = new IdentityRole();
-                role.Name = "Editor";
+                role.Name = "Partner";
                 roleManager.Create(role);
             }
             if (!roleManager.RoleExists("User"))

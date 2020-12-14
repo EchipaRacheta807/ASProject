@@ -1,4 +1,5 @@
 ﻿using KendamaShop.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +19,23 @@ namespace KendamaShop.Controllers
         }
 
         // GET
+        [Authorize(Roles = "User,Partner,Admin")]
         public ActionResult Edit(int id)
         {
             Review review = db.Reviews.Find(id);
-            return View(review);
+            if (review.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+            {
+                return View(review);
+            }
+            else
+            {
+                TempData["message"] = "Insufficient rights to modify this review!";
+                return RedirectToAction("Index", "Products");
+            }
         }
 
         [HttpPut]
+        [Authorize(Roles = "User,Partner,Admin")]
         public ActionResult Edit(int id, Review requestReview)
         {
 
@@ -34,15 +45,23 @@ namespace KendamaShop.Controllers
                 {
                     Review review = db.Reviews.Find(id);
 
-                    if (TryUpdateModel(review))
+                    if (review.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
                     {
-                        // Make sure the edit form contains all model properties
-                        review.Content = requestReview.Content;
-                        review.Stars = requestReview.Stars;
-                        db.SaveChanges();
-                        TempData["message"] = "The review was edited!";
+                        if (TryUpdateModel(review))
+                        {
+                            // Make sure the edit form contains all model properties
+                            review.Content = requestReview.Content;
+                            review.Stars = requestReview.Stars;
+                            db.SaveChanges();
+                            TempData["message"] = "The review was edited!";
+                        }
+                        return Redirect("/Products/Show/" + review.ProductId.ToString());
                     }
-                    return Redirect("/Products/Show/" + review.ProductId.ToString());
+                    else
+                    {
+                        TempData["message"] = "Insufficient rights to modify this review!";
+                        return RedirectToAction("Index", "Products");
+                    }
                 }
                 else
                 {
@@ -56,13 +75,22 @@ namespace KendamaShop.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "User,Partner,Admin")]
         public ActionResult Delete(int id)
         {
             Review review = db.Reviews.Find(id);
-            db.Reviews.Remove(review);
-            db.SaveChanges();
-            TempData["message"] = "The review was deleted!";
-            return Redirect("/Products/Show/" + review.ProductId.ToString());
+            if (review.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+            {
+                db.Reviews.Remove(review);
+                db.SaveChanges();
+                TempData["message"] = "The review was deleted!";
+                return Redirect("/Products/Show/" + review.ProductId.ToString());
+            }
+            else
+            {
+                TempData["message"] = "Insufficient rights to detele this review!";
+                return RedirectToAction("Index", "Products");
+            }
         }
     }
 }

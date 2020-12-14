@@ -6,20 +6,27 @@
 
 <div class="panel panel-default">
     @Html.Partial("ProductInfo", Model)
+    @if ((ViewBag.isPartner && ViewBag.currentUser == Model.UserId) || ViewBag.isAdmin)
+    {
     <div class="panel-footer">
         <a class="btn btn-sm btn-succes pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
-        <form method="post" action="/Products/Delete/@Model.ProductId">
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
+        @using (Html.BeginForm(actionName: "Delete", controllerName: "Products"))
+        {
+            @Html.Hidden("ProductId");
+            @Html.HttpMethodOverride(HttpVerbs.Delete);
             <button class="btn btn-sm btn-danger pull-right" type="submit">Delete product</button>
-        </form>
+        }
         <div class="clearfix"></div>
     </div>
+    }
 </div>
 
 @foreach(KendamaShop.Models.Review review in Model.Reviews)
 {
-    <div class="panel panel-default">
-        @Html.Partial("ReviewInfo", review)
+<div class="panel panel-default">
+    @Html.Partial("ReviewInfo", review)
+    @if (ViewBag.isAdmin || review.UserId == ViewBag.currentUser)
+    {
         <div class="panel-footer">
             <a class="btn btn-sm btn-succes pull-left" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
             <form method="post" action="/Reviews/Delete/@review.ReviewId">
@@ -28,7 +35,9 @@
             </form>
             <div class="clearfix"></div>
         </div>
-    </div>
+    }
+
+</div>
 }
 
 <div class="container">

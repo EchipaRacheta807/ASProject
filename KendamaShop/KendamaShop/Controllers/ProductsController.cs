@@ -32,6 +32,7 @@ namespace KendamaShop.Controllers
             {
                 ViewBag.Message = TempData["message"];
             }
+            SetAccessRights();
             return View(product);
         }
 
@@ -51,6 +52,7 @@ namespace KendamaShop.Controllers
                 else
                 {
                     Product prod = db.Products.Find(review.ProductId);
+                    SetAccessRights();
                     return View(prod);
                 }
 
@@ -58,10 +60,12 @@ namespace KendamaShop.Controllers
             catch (Exception e)
             {
                 Product prod = db.Products.Find(review.ProductId);
+                SetAccessRights();
                 return View(prod);
             }
         }
 
+        [Authorize(Roles = "Partner,Admin")]
         public ActionResult New()
         {
             Product product = new Product();
@@ -71,6 +75,7 @@ namespace KendamaShop.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Partner,Admin")]
         public ActionResult New(Product product)
         {
             product.Date = DateTime.Now;
@@ -97,14 +102,26 @@ namespace KendamaShop.Controllers
             }
         }
 
+        [Authorize(Roles = "Partner,Admin")]
         public ActionResult Edit(int id)
         {
             Product product = db.Products.Find(id);
             product.Categ = GetAllCategories();
-            return View(product);
+
+            if (product.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+            {
+                return View(product);
+            }
+
+            else
+            {
+                TempData["message"] = "You don't have sufficient rights to modify the product!";
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPut]
+        [Authorize(Roles = "Partner,Admin")]
         public ActionResult Edit(int id, Product requestProd)
         {
             requestProd.Categ = GetAllCategories();
@@ -115,18 +132,27 @@ namespace KendamaShop.Controllers
                 {
                     Product product = db.Products.Find(id);
 
-                    if (TryUpdateModel(product))
+                    if (product.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
                     {
-                        // Make sure the edit form contains all model properties
-                        product.Title = requestProd.Title;
-                        product.Description = requestProd.Description;
-                        product.Price = requestProd.Price;
-                        product.Rating = requestProd.Rating;
-                        product.Categ = requestProd.Categ;
-                        db.SaveChanges();
-                        TempData["message"] = "The product info was modified!";
+                        if (TryUpdateModel(product))
+                        {
+                            // Make sure the edit form contains all model properties
+                            product.Title = requestProd.Title;
+                            product.Description = requestProd.Description;
+                            product.Price = requestProd.Price;
+                            product.Rating = requestProd.Rating;
+                            product.Categ = requestProd.Categ;
+                            db.SaveChanges();
+                            TempData["message"] = "The product info was modified!";
+                        }
+                        return Redirect("/Products/Show/" + product.ProductId);
                     }
-                    return Redirect("/Products/Show/" + product.ProductId);
+                    else
+                    {
+                        TempData["message"] = "Insufficient rights to modify the product!";
+                        return RedirectToAction("Index");   
+                    }
+                    
                 }
                 else
                 {
@@ -140,13 +166,23 @@ namespace KendamaShop.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Partner,Admin")]
         public ActionResult Delete(int id)
         {
             Product product = db.Products.Find(id);
-            db.Products.Remove(product);
-            db.SaveChanges();
-            TempData["message"] = "The product was deleted!";
-            return RedirectToAction("Index");
+            if (product.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+            {
+                db.Products.Remove(product);
+                db.SaveChanges();
+                TempData["message"] = "The product was deleted!";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["message"] = "Insufficient rights to delete the product!";
+                return RedirectToAction("Index");
+            }
+            
         }
 
         [NonAction]
@@ -181,6 +217,13 @@ namespace KendamaShop.Controllers
 
             // returnam lista de categorii
             return selectList;
+        }
+
+        private void SetAccessRights()
+        {
+            ViewBag.isPartner = User.IsInRole("Partner");
+            ViewBag.isAdmin = User.IsInRole("Admin");
+            ViewBag.currentUser = User.Identity.GetUserId();
         }
     }
 }
