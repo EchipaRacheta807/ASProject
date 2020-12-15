@@ -40,6 +40,7 @@ namespace KendamaShop.Controllers
         public ActionResult Show(Review review)
         {
             review.Date = DateTime.Now;
+            review.UserId = User.Identity.GetUserId();
             try
             {
                 if (ModelState.IsValid)
