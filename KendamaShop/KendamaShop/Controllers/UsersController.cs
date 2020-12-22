@@ -120,7 +120,7 @@ namespace KendamaShop.Controllers
 
             var user = UserManager.Users.FirstOrDefault(u => u.Id == id);
 
-            var products = db.Products.Where(a => a.UserId == id);
+            var products = db.Products.Where(a => a.PartnerId == id);
             foreach (var product in products)
             {
                 db.Products.Remove(product);

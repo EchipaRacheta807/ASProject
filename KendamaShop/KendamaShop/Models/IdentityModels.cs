@@ -14,6 +14,7 @@ namespace KendamaShop.Models
     public class ApplicationUser : IdentityUser
     {
         public IEnumerable<SelectListItem> AllRoles { get; set; }
+        public ICollection<Product> Products { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -41,6 +42,7 @@ namespace KendamaShop.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 
     public class ApplicationRoleManager : RoleManager<IdentityRole>

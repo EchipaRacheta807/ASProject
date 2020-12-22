@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,7 +14,9 @@ namespace KendamaShop.Models
         public int ProductId { get; set; }
 
         // Seller id
-        public string UserId { get; set; }
+        [ForeignKey("User")]
+        public string PartnerId { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         [Required(ErrorMessage = "Category Field is required")]
         public int CategoryId { get; set; }
@@ -45,10 +48,10 @@ namespace KendamaShop.Models
 
         public virtual Category Category { get; set; }
 
-        public virtual ApplicationUser User { get; set; }
-
         public IEnumerable<SelectListItem> Categ { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }
+
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }
