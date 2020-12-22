@@ -10,7 +10,7 @@
     @if ((ViewBag.isPartner && ViewBag.currentUser == Model.UserId) || ViewBag.isAdmin)
     {
     <div class="panel-footer">
-        <a class="btn btn-sm btn-succes pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
+        <a class="btn btn-sm btn-success pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
         @using (Html.BeginForm(actionName: "Delete", controllerName: "Products"))
         {
             @Html.Hidden("ProductId");
@@ -29,7 +29,7 @@
     @if (ViewBag.isAdmin || review.UserId == ViewBag.currentUser)
     {
         <div class="panel-footer">
-            <a class="btn btn-sm btn-succes pull-left" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
+            <a class="btn btn-sm btn-success pull-left" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
             <form method="post" action="/Reviews/Delete/@review.ReviewId">
                 @Html.HttpMethodOverride(HttpVerbs.Delete)
                 <button type="submit" class="btn btn-sm btn-danger pull-right">Delete Review</button>

@@ -15,13 +15,48 @@ namespace KendamaShop.Controllers
         // GET: Products
         public ActionResult Index()
         {
-            var products = db.Products.Include("Category").Include("User");
+            var products = db.Products.Include("Category").Include("User").Where(prod => prod.Accepted);
+
             ViewBag.Products = products;
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];
             }
             return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Pending()
+        {
+            var products = db.Products.Include("Category").Include("User").Where(prod => prod.Accepted == false);
+            if (TempData.ContainsKey("message")){
+                ViewBag.Message = TempData["message"];
+            }
+
+            ViewBag.Products = products;
+
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Accept(int id)
+        {
+            var product = db.Products.Find(id);
+            if (product.Accepted)
+            {
+                TempData["message"] = "Tried to perform invalid Accepting command";
+                return RedirectToAction("Pending");
+            }
+            if (TryUpdateModel(product))
+            {
+                product.Accepted = true;
+                db.SaveChanges();
+                TempData["message"] = "The product was accepted successfully";
+                return RedirectToAction("Pending");
+            }
+
+            TempData["message"] = "Could not accept product, try again later";
+            return RedirectToAction("Pending");
         }
 
         // GET
@@ -81,13 +116,22 @@ namespace KendamaShop.Controllers
         {
             product.Date = DateTime.Now;
             product.UserId = User.Identity.GetUserId();
+            product.Accepted = false;
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (User.IsInRole("Admin"))
+                    {
+                        product.Accepted = true;
+                        TempData["message"] = "The product was added to the database!";
+                    }
+                    else
+                    {
+                        TempData["message"] = "The request to add the product has been sent!";
+                    }
                     db.Products.Add(product);
                     db.SaveChanges();
-                    TempData["message"] = "The product was added to the database";
                     return RedirectToAction("Index");
                 }
                 else

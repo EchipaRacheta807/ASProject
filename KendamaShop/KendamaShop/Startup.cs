@@ -20,14 +20,14 @@ namespace KendamaShop
             ApplicationDbContext context = new ApplicationDbContext();
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            // Se adauga rolurile aplicatiei
+            // Create application roles
             if (!roleManager.RoleExists("Admin"))
             {
-                // Se adauga rolul de administrator
+                // Add admin role
                 var role = new IdentityRole();
                 role.Name = "Admin";
                 roleManager.Create(role);
-                // se adauga utilizatorul administrator
+                // Add admin user
                 var user = new ApplicationUser();
                 user.UserName = "admin@gmail.com";
                 user.Email = "admin@gmail.com";
@@ -42,12 +42,31 @@ namespace KendamaShop
                 var role = new IdentityRole();
                 role.Name = "Partner";
                 roleManager.Create(role);
+                // Add partner user
+                var user = new ApplicationUser();
+                user.UserName = "partner@gmail.com";
+                user.Email = "partner@gmail.com";
+                var partnerCreated = UserManager.Create(user, "!1Partner");
+                if (partnerCreated.Succeeded)
+                {
+                    UserManager.AddToRole(user.Id, "Partner");
+                }
             }
             if (!roleManager.RoleExists("User"))
             {
+                // Add user role
                 var role = new IdentityRole();
                 role.Name = "User";
                 roleManager.Create(role);
+                // Add user user
+                var user = new ApplicationUser();
+                user.UserName = "partner@gmail.com";
+                user.Email = "partner@gmail.com";
+                var userCreated = UserManager.Create(user, "!1Partner");
+                if (userCreated.Succeeded)
+                {
+                    UserManager.AddToRole(user.Id, "User");
+                }
             }
         }
     }

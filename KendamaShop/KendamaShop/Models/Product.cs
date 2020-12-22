@@ -35,7 +35,13 @@ namespace KendamaShop.Models
         [Required(ErrorMessage = "Rating field is required")]
         public float Rating { get; set; }
 
-        public DateTime Date { get; set; }        
+        public DateTime Date { get; set; }
+
+        // 0 when a partner tries to add it. There will be a separated index page with only
+        // products that haven't been accepted yet, and an admin will be able to mark them as accepted
+        // when an admin adds a product, it is automatically 1.
+        // the default product index method will only show products with Accepted = true
+        public bool Accepted { get; set; }
 
         public virtual Category Category { get; set; }
 
