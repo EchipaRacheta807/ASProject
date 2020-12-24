@@ -230,11 +230,6 @@ namespace KendamaShop.Controllers
             
         }
 
-        public ActionResult AddToCart(int id)
-        {
-            return RedirectToAction("Show", new { id = 99 });
-        }
-
         [NonAction]
         public IEnumerable<SelectListItem> GetAllCategories()
         {

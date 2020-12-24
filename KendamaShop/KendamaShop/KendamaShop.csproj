@@ -264,10 +264,10 @@
     <Content Include="Views\Users\Show.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Products\Pending.cshtml" />
+    <Content Include="Views\Carts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Carts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

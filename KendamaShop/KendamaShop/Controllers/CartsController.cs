@@ -12,11 +12,26 @@ namespace KendamaShop.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        private ICollection<Product> ProductList = new List<Product>();
+        private Array<Product> ProductList = new Array<Product>();
 
         // GET: Carts
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
+            if (id == null)
+            {
+                System.Diagnostics.Debug.WriteLine("null branch");
+                System.Diagnostics.Debug.WriteLine(ProductList);
+                var products = ProductList;
+                ViewBag.Products = products;
+            }
+            else
+            {
+                ViewBag.Products = new List<Product>();
+            }
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+            }
             return View();
         }
 
@@ -32,13 +47,18 @@ namespace KendamaShop.Controllers
             return RedirectToAction("Index");
         }
 
-        [NonAction]
-        public void AddToProductList(int id)
+        [HttpPut]
+        public ActionResult AddToCart(int id)
         {
             var product = db.Products.Find(id);
             if (product == null)
-                return;
+            {
+                TempData["message"] = "Inexistent Product!";
+                return RedirectToAction("Index", "Products");
+            }
+            TempData["message"] = "Product added to cart!";
             ProductList.Add(product);
+            return RedirectToAction("Show", "Products", new { id = id });
         }
 
         [NonAction]
