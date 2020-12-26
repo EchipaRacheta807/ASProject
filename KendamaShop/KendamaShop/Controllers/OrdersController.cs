@@ -20,7 +20,7 @@ namespace KendamaShop.Controllers
         {
             ViewBag.currentUser = User.Identity.GetUserId();
             string currentUser = User.Identity.GetUserId();
-            var orders = db.Orders.Include("Products").Where(order => order.UserId == currentUser);
+            var orders = db.Orders.Include("OrderProducts").Where(order => order.UserId == currentUser);
             ViewBag.Orders = orders;
             return View();
         }
@@ -32,8 +32,6 @@ namespace KendamaShop.Controllers
             {
                 System.Diagnostics.Debug.WriteLine("null branch");
                 var products = db.Products.Include("Category").Include("User").Where(a => ProductCount.Keys.Contains(a.ProductId));
-                
-
                 ViewBag.Products = products;
                 ViewBag.ToBuy = (ProductCount.Count() > 0);
                 ViewBag.ProductCount = ProductCount;
@@ -42,22 +40,17 @@ namespace KendamaShop.Controllers
             {
                 System.Diagnostics.Debug.WriteLine("not null branch");
                 var order = db.Orders.Find(id);
-                var products = db.Orders.Include("Products").Include("Category").Include("User").Where(o => o.OrderId == id).SelectMany(o => o.Products);
-                //var order = from order in db.OrderProducts
-                //            where order.OrderId == id
-                //            select order.ProductId;
-                //List < Product > products = new List<Product>();
-                //foreach(var product in order.Products)
-                //{
-                //    products.Add(product);
-                //}
-                //Product prod;
-                //var products = from order in db.Orders
-                //               where order.OrderId == id
-                //               select order
+                //var products = db.Orders.Include("Products").Include("Category").Include("User").Where(o => o.OrderId == id).SelectMany(o => o.Products);
+                var products = db.OrderProducts.Include("Product").Include("Category").Include("User").Where(op => op.OrderId == id).Select(op => op.Product);
+                var orderPCount = db.OrderProducts.Where(op => op.OrderId == id);
+                IDictionary<int, int> PCount = new Dictionary<int, int>();
+                foreach (var op in orderPCount)
+                {
+                    PCount.Add(op.ProductId, op.Quantity);
+                }
                 ViewBag.Order = order;
                 ViewBag.Products = products;
-                ViewBag.ProductCount = order.ProductCount;
+                ViewBag.ProductCount = PCount;
                 ViewBag.ToBuy = false;
             }
             if (TempData.ContainsKey("message"))
@@ -105,10 +98,17 @@ namespace KendamaShop.Controllers
             Order order = new Order();
             order.UserId = User.Identity.GetUserId();
             order.Date = DateTime.Now;
-            order.Products = GetProducts();
-            order.ProductCount = ProductCount;
-            ProductCount.Clear();
             db.Orders.Add(order);
+            //order.Products = GetProducts();
+            //
+            //order.ProductCount = ProductCount;
+            foreach(KeyValuePair<int, int> entry in ProductCount)
+            {
+                OrderProducts op = new OrderProducts(order.OrderId, entry.Key, entry.Value);
+                db.OrderProducts.Add(op);
+            }
+            //
+            ProductCount.Clear();
             db.SaveChanges();
             return RedirectToAction("Index");
         }

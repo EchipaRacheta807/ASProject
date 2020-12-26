@@ -21,8 +21,5 @@ namespace KendamaShop.Models
         public DateTime Date { get; set; }
 
         public ICollection<OrderProducts> OrderProducts { get; set; }
-
-        [Required]
-        public IDictionary<int, int> ProductCount { get; set; }
     }
 }
