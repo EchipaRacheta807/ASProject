@@ -1,0 +1,24 @@
+﻿@{ ViewBag.Title = "Cart"; }
+
+<h1>@ViewBag.Message</h1>
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (KendamaShop.Models.Product product in ViewBag.Products)
+{
+    <div class="panel panel-default">
+        @Html.Partial("ProductInfo", product)
+        <strong>Quantity:</strong>@ViewBag.ProductCount[product.ProductId]
+        <br />
+        <div class="panel-footer">
+            <a class="btn btn-sm btn-success" href="/Products/Show/@product.ProductId">Show product</a>
+        </div>
+    </div>
+}
+
+@if (ViewBag.ToBuy)
+{
+    <form method="post" action="/Orders/Buy">
+        <button class="btn btn-sm btn-success" type="submit">Buy</button>
+    </form>
+}

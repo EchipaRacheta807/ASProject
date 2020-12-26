@@ -52,6 +52,6 @@ namespace KendamaShop.Models
 
         public virtual ICollection<Review> Reviews { get; set; }
 
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<OrderProducts> OrderProducts { get; set; }
     }
 }

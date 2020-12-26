@@ -33,7 +33,7 @@ namespace KendamaShop.Models
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext,
                 KendamaShop.Migrations.Configuration>("DefaultConnection"));
         }
-        
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
@@ -43,6 +43,7 @@ namespace KendamaShop.Models
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderProducts> OrderProducts { get; set; }
     }
 
     public class ApplicationRoleManager : RoleManager<IdentityRole>

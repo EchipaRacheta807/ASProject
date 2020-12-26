@@ -60,9 +60,9 @@ namespace KendamaShop
                 roleManager.Create(role);
                 // Add user user
                 var user = new ApplicationUser();
-                user.UserName = "partner@gmail.com";
-                user.Email = "partner@gmail.com";
-                var userCreated = UserManager.Create(user, "!1Partner");
+                user.UserName = "user@gmail.com";
+                user.Email = "user@gmail.com";
+                var userCreated = UserManager.Create(user, "!1User");
                 if (userCreated.Succeeded)
                 {
                     UserManager.AddToRole(user.Id, "User");
