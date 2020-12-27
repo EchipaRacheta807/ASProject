@@ -27,6 +27,7 @@ namespace KendamaShop.Controllers
             return View();
         }
 
+        // GET
         public ActionResult Show(int id)
         {
             Category category = db.Categories.Find(id);

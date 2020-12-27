@@ -7,16 +7,18 @@
 
 <div class="panel panel-default">
     @Html.Partial("ProductInfo", Model)
-    @if ((ViewBag.isPartner && ViewBag.currentUser == Model.UserId) || ViewBag.isAdmin)
+    @if ((ViewBag.isPartner && ViewBag.currentUser == Model.PartnerId) || ViewBag.isAdmin)
     {
     <div class="panel-footer">
-        <a class="btn btn-sm btn-succes pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
-        @using (Html.BeginForm(actionName: "Delete", controllerName: "Products"))
-        {
-            @Html.Hidden("ProductId");
-            @Html.HttpMethodOverride(HttpVerbs.Delete);
-            <button class="btn btn-sm btn-danger pull-right" type="submit">Delete product</button>
-        }
+        <a class="btn btn-sm btn-success pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
+        <form method="post" action="/Orders/AddToCart/@Model.ProductId">
+            @Html.HttpMethodOverride(HttpVerbs.Put)
+            <button class="btn btn-sm btn-success">Add to Cart</button>
+        </form>
+        <form method="post" action="/Products/Delete/@Model.ProductId">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button class="btn btn-sm btn-danger pull-right">Delete product</button>
+        </form>
         <div class="clearfix"></div>
     </div>
     }
@@ -29,7 +31,7 @@
     @if (ViewBag.isAdmin || review.UserId == ViewBag.currentUser)
     {
         <div class="panel-footer">
-            <a class="btn btn-sm btn-succes pull-left" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
+            <a class="btn btn-sm btn-success pull-left" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
             <form method="post" action="/Reviews/Delete/@review.ReviewId">
                 @Html.HttpMethodOverride(HttpVerbs.Delete)
                 <button type="submit" class="btn btn-sm btn-danger pull-right">Delete Review</button>

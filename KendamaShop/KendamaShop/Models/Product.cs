@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,7 +14,9 @@ namespace KendamaShop.Models
         public int ProductId { get; set; }
 
         // Seller id
-        public string UserId { get; set; }
+        [ForeignKey("User")]
+        public string PartnerId { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         [Required(ErrorMessage = "Category Field is required")]
         public int CategoryId { get; set; }
@@ -35,14 +38,20 @@ namespace KendamaShop.Models
         [Required(ErrorMessage = "Rating field is required")]
         public float Rating { get; set; }
 
-        public DateTime Date { get; set; }        
+        public DateTime Date { get; set; }
+
+        // 0 when a partner tries to add it. There will be a separated index page with only
+        // products that haven't been accepted yet, and an admin will be able to mark them as accepted
+        // when an admin adds a product, it is automatically 1.
+        // the default product index method will only show products with Accepted = true
+        public bool Accepted { get; set; }
 
         public virtual Category Category { get; set; }
-
-        public virtual ApplicationUser User { get; set; }
 
         public IEnumerable<SelectListItem> Categ { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }
+
+        public virtual ICollection<OrderProducts> OrderProducts { get; set; }
     }
 }

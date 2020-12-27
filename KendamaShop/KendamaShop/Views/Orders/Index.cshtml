@@ -1,0 +1,14 @@
+﻿@{ ViewBag.Title = "Order history"; }
+
+<h1>@ViewBag.Message</h1>
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (KendamaShop.Models.Order order in ViewBag.Orders)
+{
+<div class="panel panel-default">
+    @Html.Partial("OrderInfo", order)
+    <div class="panel-footer">
+        <a class="btn btn-sm btn-success" href="/Orders/Show/@order.OrderId">Show order</a>
+    </div>
+</div>}
