@@ -8,7 +8,7 @@
 {
     <div class="panel panel-default">
         @Html.Partial("ProductInfo", product)
-        @*<strong>Quantity:</strong>@ViewBag.ProductCount[product.ProductId]*@
+        <strong>Quantity:</strong>@ViewBag.ProductCount[product.ProductId]
         <br />
         <div class="panel-footer">
             <a class="btn btn-sm btn-success" href="/Products/Show/@product.ProductId">Show product</a>
