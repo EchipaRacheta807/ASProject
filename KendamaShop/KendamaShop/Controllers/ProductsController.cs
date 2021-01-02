@@ -12,16 +12,54 @@ namespace KendamaShop.Controllers
     {
         public ApplicationDbContext db = new ApplicationDbContext();
 
+        private int _perPage = 3;
+
         // GET: Products
         public ActionResult Index()
         {
-            var products = db.Products.Include("Category").Include("User").Where(prod => prod.Accepted);
+            var products = db.Products.Include("Category").Include("User").Where(prod => prod.Accepted).OrderBy(prod => prod.Date);
+            var search = "";
 
-            ViewBag.Products = products;
+            if (Request.Params.Get("search") != null)
+            {
+                search = Request.Params.Get("search").Trim();
+
+                // Search in product title and description
+                List<int> productIds = db.Products.Where(
+                    prod => prod.Title.Contains(search) || prod.Description.Contains(search)
+                    ).Select(prod => prod.ProductId).ToList();
+
+                // Search in reviews
+                List<int> reviewIds = db.Reviews.Where(
+                    rev => rev.Content.Contains(search)
+                    ).Select(rev => rev.ProductId).ToList();
+
+                List<int> mergedIds = productIds.Union(reviewIds).ToList();
+
+                products = db.Products.Include("Category").Include("User").Where(prod => mergedIds.Contains(prod.ProductId)).OrderBy(prod => prod.Date);
+            }
+
+            var totalItems = products.Count();
+            var currentPage = Convert.ToInt32(Request.Params.Get("page"));
+            var offset = 0;
+
+            if (!currentPage.Equals(0))
+            {
+                offset = (currentPage - 1) * this._perPage;
+            }
+
+            var paginatedProducts = products.Skip(offset).Take(this._perPage);
+
             if (TempData.ContainsKey("message"))
             {
-                ViewBag.Message = TempData["message"];
+                ViewBag.message = TempData["message"].ToString();
             }
+
+            ViewBag.total = totalItems;
+            ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)this._perPage);
+            ViewBag.Products = paginatedProducts;
+            ViewBag.SearchString = search;
+
             return View();
         }
 
