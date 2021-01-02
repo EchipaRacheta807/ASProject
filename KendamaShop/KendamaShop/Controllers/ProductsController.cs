@@ -13,6 +13,7 @@ namespace KendamaShop.Controllers
         public ApplicationDbContext db = new ApplicationDbContext();
 
         private int _perPage = 3;
+        private static string sortingCriterium = "date_asc";
 
         // GET: Products
         public ActionResult Index()
@@ -39,6 +40,32 @@ namespace KendamaShop.Controllers
                 products = db.Products.Include("Category").Include("User").Where(prod => mergedIds.Contains(prod.ProductId)).OrderBy(prod => prod.Date);
             }
 
+            // sort the list of products
+            if (sortingCriterium == "price_asc")
+            {
+                products = products.OrderBy(prod => prod.Price);
+            }
+            else if (sortingCriterium == "price_desc")
+            {
+                products = products.OrderByDescending(prod => prod.Price);
+            }
+            else if (sortingCriterium == "rating_asc")
+            {
+                products = products.OrderBy(prod => prod.Rating);
+            }
+            else if (sortingCriterium == "rating_desc")
+            {
+                products = products.OrderByDescending(prod => prod.Rating);
+            }
+            else if (sortingCriterium == "date_asc")
+            {
+                products = products.OrderBy(prod => prod.Date);
+            }
+            else if (sortingCriterium == "date_desc")
+            {
+                products = products.OrderByDescending(prod => prod.Date);
+            }
+
             var totalItems = products.Count();
             var currentPage = Convert.ToInt32(Request.Params.Get("page"));
             var offset = 0;
@@ -61,6 +88,12 @@ namespace KendamaShop.Controllers
             ViewBag.SearchString = search;
 
             return View();
+        }
+
+        public ActionResult SetSortingCriterium(string sortParam)
+        {
+            sortingCriterium = sortParam;
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "Admin")]
