@@ -7,14 +7,50 @@
 
 <p>@Model.CategoryName</p>
 
-<form method="post" action="/Categories/Delete/@Model.CategoryId">
+@foreach (KendamaShop.Models.Product prod in ViewBag.Products)
+{
+    <div class="panel page-article">
+        @Html.Partial("ProductInfo", prod)
+        <div class="panel-footer article-panel-footer around">
+            <a class="btn btn-sm btn-success full-width"
+               href="/Products/Show/@prod.ProductId">Show product</a>
+        </div>
+    </div>
+}
 
-    @Html.HttpMethodOverride(HttpVerbs.Delete)
+<div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li>
+                <a href="/Categories/Show/@Model.CategoryId?page=1" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
 
-    <button class="btn btn-success" type="submit">Delete Category</button>
+            </li>
+            @for (int i = 1; i <= ViewBag.lastPage; i++)
+            {
+                <li><a href="/Categories/Show/@Model.CategoryId?page=@i">@(i)</a></li>
+            }
+            <li>
+                <a href="/Categories/Show/@Model.CategoryId?page=@(ViewBag.lastPage)" arialabel="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
 
-</form>
-<br />
+@if (User.IsInRole("Admin"))
+{
+    <form method="post" action="/Categories/Delete/@Model.CategoryId">
+
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+
+        <button class="btn btn-success" type="submit">Delete Category</button>
+
+    </form>
+    <br />
+}
 <a class="btn btn-success" href="/Categories/Index/">Show all categories</a>
 
 <br />
