@@ -3,7 +3,7 @@ namespace KendamaShop.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initial : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -28,6 +28,8 @@ namespace KendamaShop.Migrations
                         Price = c.Single(nullable: false),
                         Rating = c.Single(nullable: false),
                         Date = c.DateTime(nullable: false),
+                        ImagePath = c.String(),
+                        ImageFile = c.Binary(),
                         Accepted = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.ProductId)

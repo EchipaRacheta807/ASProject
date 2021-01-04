@@ -193,11 +193,18 @@ namespace KendamaShop.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Partner,Admin")]
-        public ActionResult New(Product product)
+        public ActionResult New(Product product, HttpPostedFileBase ImageFileBase)
         {
             product.Date = DateTime.Now;
             product.PartnerId = User.Identity.GetUserId();
             product.Accepted = false;
+
+            if (ImageFileBase != null)
+            {
+                product.ImageFile = new byte[ImageFileBase.ContentLength];
+                ImageFileBase.InputStream.Read(product.ImageFile, 0, ImageFileBase.ContentLength);
+            }
+
             try
             {
                 if (ModelState.IsValid)
