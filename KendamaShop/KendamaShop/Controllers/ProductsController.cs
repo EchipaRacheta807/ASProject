@@ -130,6 +130,16 @@ namespace KendamaShop.Controllers
             return RedirectToAction("Pending");
         }
 
+        [Authorize(Roles = "Admin")]
+        public ActionResult Decline(int id)
+        {
+            Product product = db.Products.Find(id);
+            db.Products.Remove(product);
+            db.SaveChanges();
+            TempData["message"] = "The product was declined!";
+            return RedirectToAction("Pending");
+        }
+
         // GET
         public ActionResult Show(int id)
         {
@@ -282,7 +292,7 @@ namespace KendamaShop.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Partner,Admin")]
+        [Authorize(Roles = "Partner, Admin")]
         public ActionResult Delete(int id)
         {
             Product product = db.Products.Find(id);
@@ -298,7 +308,6 @@ namespace KendamaShop.Controllers
                 TempData["message"] = "Insufficient rights to delete the product!";
                 return RedirectToAction("Index");
             }
-            
         }
 
         [NonAction]

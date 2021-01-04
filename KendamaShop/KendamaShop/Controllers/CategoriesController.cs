@@ -7,7 +7,6 @@ using System.Web.Mvc;
 
 namespace KendamaShop.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class CategoriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -38,11 +37,13 @@ namespace KendamaShop.Controllers
             return View(category);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult New()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult New(Category cat)
         {
@@ -66,12 +67,14 @@ namespace KendamaShop.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             Category category = db.Categories.Find(id);
             return View(category);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public ActionResult Edit(int id, Category requestCategory)
         {
@@ -95,6 +98,7 @@ namespace KendamaShop.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public ActionResult Delete(int id)
         {

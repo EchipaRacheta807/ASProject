@@ -48,6 +48,24 @@
                 </div>
             </form>
         </div>
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Partner"))
+        {
+            <br />
+            <br />
+
+            <div>
+                <form method="post" action="/Products/New">
+                    <button class="btn btn-lg btn-success"
+                            type="submit">
+                        Add new product
+                    </button>
+                </form>
+            </div>
+
+            <br />
+        }
+
     </div>
 </div>
 
