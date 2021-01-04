@@ -2,7 +2,7 @@
 
 <h2>Add product</h2>
 
-<form method="post" action="/Products/New">
+<form method="post" action="/Products/New" enctype="multipart/form-data">
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
     @Html.Label("Title", "Product title")
@@ -13,6 +13,11 @@
     @Html.Label("Description", "Product description")
     <br />
     @Html.TextArea("Description", null, new { @class = "form-control " })
+    <br /> <br />
+
+    @Html.Label("Image", "Product Image")
+    <input type="file" name="Image" class="form-control" />
+
     <br /> <br />
 
     @Html.Label("Price", "Product price ($)")

@@ -11,18 +11,32 @@
 <h2>@ViewBag.Title</h2>
 <br />
 
+@if (User.IsInRole("Admin"))
+{
+    <a class="btn btn-primary" href="/Categories/New">Add category</a>
+    <br />
+    <br />
+}
+
+
+<a class="btn btn-primary" href="/Products/Index">Show all products</a>
+
+<br />
+<br />
+
 @foreach (var category in ViewBag.Categories)
 {
     @Html.Label("CategoryName", "Category Name")
     <p>@category.CategoryName</p>
     <a class="btn btn-success" href="/Categories/Show/@category.CategoryId">View Category</a>
-    <a class="btn btn-success" href="/Categories/Edit/@category.CategoryId">Edit Category</a>
+    if (User.IsInRole("Admin"))
+    {
+        <a class="btn btn-success" href="/Categories/Edit/@category.CategoryId">Edit Category</a>
+    }
     <br />
     <hr />
     <br />
 }
 <br />
-<a class="btn btn-primary" href="/Categories/New">Add category</a>
-<a class="btn btn-primary" href="/Products/Index">Show all products</a>
 <br />
 

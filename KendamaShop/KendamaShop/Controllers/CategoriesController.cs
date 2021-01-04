@@ -7,10 +7,11 @@ using System.Web.Mvc;
 
 namespace KendamaShop.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class CategoriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        private int _perPage = 3;
 
         // GET: Category
         public ActionResult Index()
@@ -35,14 +36,40 @@ namespace KendamaShop.Controllers
             {
                 ViewBag.Message = TempData["message"];
             }
+
+            var temp_products = db.Products.Include("Category").Include("User").Where(prod => prod.Accepted).OrderBy(prod => prod.Date);
+            var products = temp_products.Where(prod => prod.CategoryId == id);
+
+            var totalItems = products.Count();
+            var currentPage = Convert.ToInt32(Request.Params.Get("page"));
+            var offset = 0;
+
+            if (!currentPage.Equals(0))
+            {
+                offset = (currentPage - 1) * this._perPage;
+            }
+
+            var paginatedProducts = products.Skip(offset).Take(this._perPage);
+
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+
+            ViewBag.total = totalItems;
+            ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)this._perPage);
+            ViewBag.Products = paginatedProducts;
+
             return View(category);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult New()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult New(Category cat)
         {
@@ -66,12 +93,14 @@ namespace KendamaShop.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             Category category = db.Categories.Find(id);
             return View(category);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public ActionResult Edit(int id, Category requestCategory)
         {
@@ -95,6 +124,7 @@ namespace KendamaShop.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public ActionResult Delete(int id)
         {

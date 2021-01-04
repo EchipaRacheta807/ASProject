@@ -11,7 +11,7 @@
 <div class="panel panel-default">
     @Html.Partial("ProductInfo", product)
     <div class="panel-footer">
-        <a class="btn btn-sm btn-info pull-left" href="/Products/Show/@product.ProductId">Show product</a>
+        <a class="btn btn-sm btn-danger pull-left" href="/Products/Decline/@product.ProductId">Decline product</a>
         <a class="btn btn-sm btn-success pull-right" href="/Products/Accept/@product.ProductId">Accept product</a>
         <div class="clearfix" />
     </div>

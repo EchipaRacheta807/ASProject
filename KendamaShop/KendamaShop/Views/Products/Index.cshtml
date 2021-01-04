@@ -9,6 +9,7 @@
                     </div>
                     <!--end of col-->
                     <div class="col">
+                        <label>Search</label>
                         <input class="form-control form-control-lg form-controlborderless" type="text" name="search"
                                value="@ViewBag.SearchString"
                                placeholder="Search topics or keywords">
@@ -25,6 +26,46 @@
             </form>
         </div>
         <!--end of col-->
+        <div>
+            <form method="post" action="/Products/SetSortingCriterium">
+                <label for="sortParam">Sort products</label>
+                <select name="sortParam" class="form-control">
+                    <option value="" selected disabled hidden>Choose here</option>
+                    <option value="date_desc">Most recent</option>
+                    <option value="date_asc">Least recent</option>
+                    <option value="price_asc">Cheapest</option>
+                    <option value="price_desc">Most Expensive</option>
+                    <option value="rating_desc">Biggest rating</option>
+                    <option value="rating_asc">Smallest rating</option>
+                </select>
+
+                <div class="col-auto">
+
+                    <button class="btn btn-lg btn-success"
+                            type="submit">
+                        Sort
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Partner"))
+        {
+            <br />
+            <br />
+
+            <div>
+                <form method="post" action="/Products/New">
+                    <button class="btn btn-lg btn-success"
+                            type="submit">
+                        Add new product
+                    </button>
+                </form>
+            </div>
+
+            <br />
+        }
+
     </div>
 </div>
 

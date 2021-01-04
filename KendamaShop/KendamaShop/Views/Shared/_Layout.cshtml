@@ -22,14 +22,14 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("List all Products", "Index", "Products")</li>
-                    @if (User.IsInRole("Partner") || User.IsInRole("Admin"))
+                    <li>@Html.ActionLink("List Categories", "Index", "Categories")</li>
+                    @if (User.IsInRole("Partner") || User.IsInRole("Admin") || User.IsInRole("User"))
                     {
-                        <li>@Html.ActionLink("Add a Product", "New", "Products")</li>
+                        <li>@Html.ActionLink("View Orders", "Index", "Orders")</li>
+                        <li>@Html.ActionLink("View Cart", "Show", "Orders")</li>
                     }
                     @if (User.IsInRole("Admin"))
                     {
-                        <li>@Html.ActionLink("List Categories", "Index", "Categories")</li>
-                        <li>@Html.ActionLink("Add a Category", "New", "Categories")</li>
                         <li>@Html.ActionLink("List Users", "Index", "Users")</li>
                         <li>@Html.ActionLink("Pending products", "Pending", "Products")</li>
                     }
