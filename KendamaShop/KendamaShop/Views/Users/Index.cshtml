@@ -17,19 +17,21 @@
     {
 <div class="card shadow my-card-margin" style="width: 30%">
     <div class="card-header">
-        Username: @user.UserName
+        @user.UserName
     </div>
     <div class="card-body">
         <i class="glyphicon glyphicon-envelope"></i> User email: <span class="label label-default">@user.Email</span>
         <br /><br />
         @if (@user.PhoneNumber != null)
         {
-<i class="glyphicon glyphicon-phone"></i>@:User phone number:<span class="label label-default">@user.PhoneNumber</span>
-}
+        <i class="glyphicon glyphicon-phone"></i>@:User phone number:<span class="label label-default">@user.PhoneNumber</span>
+        }
     </div>
     <div class="card-footer">
-        <a class="btn btn-sm btn-success" href="/Users/Edit/@user.Id"> Edit User</a>
-        <a class="btn btn-sm btn-success" href="/Users/Show/@user.Id"> View User</a>
+        <div class="my-flex-space-between">
+            <a class="btn btn-sm btn-success" href="/Users/Edit/@user.Id"> Edit User</a>
+            <a class="btn btn-sm btn-success" href="/Users/Show/@user.Id"> View User</a>
+        </div>
     </div>
 </div>}
 </div>

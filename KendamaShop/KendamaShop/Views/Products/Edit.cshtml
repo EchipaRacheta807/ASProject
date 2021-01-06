@@ -1,5 +1,9 @@
 ﻿@model KendamaShop.Models.Product
 
+@{ 
+    ViewBag.Title = "Edit product";
+}
+
 <br />
 
 <ol class="breadcrumb">
@@ -50,4 +54,8 @@
     <br /> <br />
 
     <button class="btn btn-sm btn-success" type="submit">Save</button>
+    <form method="post" action="/Products/Delete/@Model.ProductId">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button class="btn btn-sm btn-danger pull-right">Delete product</button>
+    </form>
 </form>

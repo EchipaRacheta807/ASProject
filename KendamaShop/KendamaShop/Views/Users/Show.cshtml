@@ -37,14 +37,15 @@
     @if ((string)Model.Id != ViewBag.currentUser)
     {
         <div class="card-footer">
-            <a class="btn btn-success" href="/Users/Edit/@Model.Id">Edit user</a>
-            @using (Html.BeginForm(actionName: "Delete", controllerName: "Users", routeValues: new { id = @Model.Id }))
-            {
-                @Html.HttpMethodOverride(HttpVerbs.Delete)
-                <br />
-                <button class="btn btn-success" type="submit">Delete user</button>
-
-            }
+            <div class="my-flex-space-between">
+                <a class="btn btn-success" href="/Users/Edit/@Model.Id">Edit user</a>
+                @using (Html.BeginForm(actionName: "Delete", controllerName: "Users", routeValues: new { id = @Model.Id }))
+                {
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    <br />
+                    <button class="btn btn-success" type="submit">Delete user</button>
+                }
+            </div>
         </div>
     }
 </div>

@@ -21,18 +21,16 @@
             @Html.Partial("ProductInfo", Model)
             @if ((ViewBag.isPartner && ViewBag.currentUser == Model.PartnerId) || ViewBag.isAdmin)
             {
-<div class="card-footer">
-    <a class="btn btn-sm btn-success pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
-    <form method="post" action="/Orders/AddToCart/@Model.ProductId">
-        @Html.HttpMethodOverride(HttpVerbs.Put)
-        <button class="btn btn-sm btn-success">Add to Cart</button>
-    </form>
-    <form method="post" action="/Products/Delete/@Model.ProductId">
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button class="btn btn-sm btn-danger pull-right">Delete product</button>
-    </form>
-    <div class="clearfix"></div>
-</div>      }
+            <div class="card-footer">
+                <div class="my-flex-space-between">
+                    <a class="btn btn-sm btn-success pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
+                    <form method="post" action="/Orders/AddToCart/@Model.ProductId">
+                        @Html.HttpMethodOverride(HttpVerbs.Put)
+                        <button class="btn btn-sm btn-success">Add to Cart</button>
+                    </form>
+                </div>
+            </div>      
+            }
         </div>
     </div>
 
@@ -57,7 +55,7 @@
                             <br />
                             <input type="number" name="Stars" min="0" max="5" />
 
-                            <button class="btn btn-success" type="submit">Post review</button>
+                            <button class="btn btn-sm btn-success" type="submit">Post review</button>
                         </form>
                     </div>
                 </div>
@@ -70,14 +68,16 @@
     @Html.Partial("ReviewInfo", review)
     @if (ViewBag.isAdmin || review.UserId == ViewBag.currentUser)
     {
-<div class="card-footer">
-    <a class="btn btn-sm btn-success pull-left" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
-    <form method="post" action="/Reviews/Delete/@review.ReviewId">
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button type="submit" class="btn btn-sm btn-danger pull-right">Delete Review</button>
-    </form>
-    <div class="clearfix"></div>
-</div>          }
+    <div class="card-footer">
+        <div class="my-flex-space-between">
+            <a class="btn btn-sm btn-success pull-left" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
+            <form method="post" action="/Reviews/Delete/@review.ReviewId">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button type="submit" class="btn btn-sm btn-danger pull-right">Delete Review</button>
+            </form>
+        </div>
+    </div>          
+        }
 
 </div>}
     </div>

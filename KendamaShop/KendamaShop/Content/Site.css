@@ -49,3 +49,10 @@ textarea {
 .my-card-margin {
     margin: 10px auto;
 }
+
+.my-flex-space-between {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
