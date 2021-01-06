@@ -14,6 +14,7 @@ namespace KendamaShop.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         private static IDictionary<int, int> ProductCount = new Dictionary<int, int>();
+        private IDictionary<int, float> TotalOrdersCost = new Dictionary<int, float>();
 
         // GET: Orders
         public ActionResult Index()
@@ -22,6 +23,7 @@ namespace KendamaShop.Controllers
             string currentUser = User.Identity.GetUserId();
             var orders = db.Orders.Include("OrderProducts").Where(order => order.UserId == currentUser);
             ViewBag.Orders = orders;
+            GetAllOrdersCosts();
             return View();
         }
 
@@ -140,5 +142,25 @@ namespace KendamaShop.Controllers
             var products = db.Products.Where(product => ProductCount.Keys.Contains(product.ProductId)).ToArray();
             return products;
         }
+
+        [NonAction]
+        public void GetAllOrdersCosts()
+        {
+            var orders = db.Orders.ToArray();
+
+            foreach (var order in orders)
+            {
+                float cost = 0;
+                foreach (var product in order.OrderProducts)
+                {
+                    cost += product.Product.Price;
+                }
+
+                TotalOrdersCost[order.OrderId] = cost;
+            }
+
+            ViewBag.TotalOrdersCost = TotalOrdersCost;
+        }
+
     }
 }
