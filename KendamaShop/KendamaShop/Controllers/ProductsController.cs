@@ -195,6 +195,24 @@ namespace KendamaShop.Controllers
             return View(product);
         }
 
+        [NonAction]
+        private bool IsImage(HttpPostedFileBase file)
+        {
+            if (file == null)
+            {
+                return true;
+            }
+
+            if (file.ContentType.Contains("image"))
+            {
+                return true;
+            }
+
+            string[] formats = new string[] { ".jpg", ".png", ".gif", ".jpeg", ".img" };
+
+            return formats.Any(item => file.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase));
+        }
+
         [HttpPost]
         [Authorize(Roles = "Partner,Admin")]
         public ActionResult New(Product product, HttpPostedFileBase ImageFileBase)
@@ -205,15 +223,22 @@ namespace KendamaShop.Controllers
 
             byte[] imgByte;
 
-            if (ImageFileBase != null)
+            if (IsImage(ImageFileBase))
             {
-                imgByte = new byte[ImageFileBase.ContentLength];
-                ImageFileBase.InputStream.Read(imgByte, 0, ImageFileBase.ContentLength);
-                product.ImageFile = Convert.ToBase64String(imgByte);
+                if (ImageFileBase != null)
+                {
+                    imgByte = new byte[ImageFileBase.ContentLength];
+                    ImageFileBase.InputStream.Read(imgByte, 0, ImageFileBase.ContentLength);
+                    product.ImageFile = Convert.ToBase64String(imgByte);
+                }
+                else
+                {
+                    product.ImageFile = default_img;
+                }
             }
             else
             {
-                product.ImageFile = default_img;
+                ModelState.AddModelError("", "This file should be an image");
             }
 
             try
