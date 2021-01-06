@@ -1,6 +1,18 @@
 ﻿@model KendamaShop.Models.Category
 
-<h2>Edit category</h2>
+@{ 
+    ViewBag.Title = "Edit category";
+}
+
+<br />
+
+<ol class="breadcrumb">
+    <li><h3>@ViewBag.Title</h3></li>
+</ol>
+
+@if (TempData.ContainsKey("message"))
+{
+<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>}
 
 <form method="post" action="/Categories/Edit/@Model.CategoryId">
 

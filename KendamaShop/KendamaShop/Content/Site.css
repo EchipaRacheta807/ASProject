@@ -1,6 +1,5 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿body{
+    font-family: Poppins;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -35,4 +34,25 @@ textarea {
 
 .navbar a:hover {
     color: #5cb85c !important;
+}
+
+.my-ml-auto {
+    left: auto !important;
+    right: 0px;
+}
+
+.my-flex-center {
+    justify-content: center;
+    align_items: center;
+}
+
+.my-card-margin {
+    margin: 10px auto;
+}
+
+.my-flex-space-between {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
 }

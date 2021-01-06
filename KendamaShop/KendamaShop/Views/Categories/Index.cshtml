@@ -1,21 +1,22 @@
 ﻿
-@{
-    ViewBag.Title = "All Categories";
-}
+@{ ViewBag.Title = "All Categories"; }
+
+<br />
+
+<ol class="breadcrumb">
+    <li><h3>@ViewBag.Title</h3></li>
+</ol>
 
 @if (TempData.ContainsKey("message"))
 {
-    <h1>@ViewBag.message</h1>
+<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
 }
-
-<h2>@ViewBag.Title</h2>
-<br />
 
 @if (User.IsInRole("Admin"))
 {
-    <a class="btn btn-primary" href="/Categories/New">Add category</a>
-    <br />
-    <br />
+<a class="btn btn-primary" href="/Categories/New">Add category</a>
+                <br />
+                                <br />
 }
 
 
@@ -24,19 +25,21 @@
 <br />
 <br />
 
-@foreach (var category in ViewBag.Categories)
-{
-    @Html.Label("CategoryName", "Category Name")
-    <p>@category.CategoryName</p>
-    <a class="btn btn-success" href="/Categories/Show/@category.CategoryId">View Category</a>
-    if (User.IsInRole("Admin"))
+<div class="row my-flex-center">
+    @foreach (var category in ViewBag.Categories)
     {
-        <a class="btn btn-success" href="/Categories/Edit/@category.CategoryId">Edit Category</a>
-    }
-    <br />
-    <hr />
-    <br />
-}
+<div class="card shadow my-card-margin">
+    <div class="card-body">
+        <strong>@category.CategoryName</strong>
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-success" href="/Categories/Show/@category.CategoryId">View Category</a>
+        @if (User.IsInRole("Admin"))
+        {
+<a class="btn btn-success" href="/Categories/Edit/@category.CategoryId">Edit Category</a>}
+    </div>
+</div>}
+</div>
 <br />
 <br />
 

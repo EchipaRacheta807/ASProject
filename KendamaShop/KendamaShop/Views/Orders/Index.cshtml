@@ -1,14 +1,22 @@
 ﻿@{ ViewBag.Title = "Order history"; }
 
-<h1>@ViewBag.Message</h1>
+<br />
 
-<h2>@ViewBag.Title</h2>
+<ol class="breadcrumb">
+    <li><h3>@ViewBag.Title</h3></li>
+</ol>
 
-@foreach (KendamaShop.Models.Order order in ViewBag.Orders)
+@if (TempData.ContainsKey("message"))
 {
-<div class="panel panel-default">
+<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>}
+
+<div class="row my-flex-center">
+    @foreach (KendamaShop.Models.Order order in ViewBag.Orders)
+    {
+<div class="card shadow my-card-margin">
     @Html.Partial("OrderInfo", order)
-    <div class="panel-footer">
-        <a class="btn btn-sm btn-success" href="/Orders/Show/@order.OrderId">Show order</a>
+    <div class="card-footer">
+        <a class="btn btn-sm btn-success full-width" href="/Orders/Show/@order.OrderId">Show order</a>
     </div>
 </div>}
+</div>

@@ -5,9 +5,16 @@
     ViewBag.Title = "Edit user role:";
 }
 
+<br />
+
 <ol class="breadcrumb">
     <li><h3>@ViewBag.Title</h3></li>
 </ol>
+
+@if (TempData.ContainsKey("message"))
+{
+    <h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
+}
 
 @using (Html.BeginForm(actionName: "Edit", controllerName: "Users", routeValues: new { id = @Model.Id }))
 {

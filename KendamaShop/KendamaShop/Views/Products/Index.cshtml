@@ -1,7 +1,22 @@
-﻿<div class="container">
+﻿@{ 
+    ViewBag.Title = "List Users";
+}
+
+<br />
+
+<ol class="breadcrumb">
+    <li><h3>@ViewBag.Title</h3></li>
+</ol>
+
+@if (TempData.ContainsKey("message"))
+{
+    <h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
+}
+
+<div class="container">
     <br />
     <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
+        <div class="col-12 col-lg-10 col-xl-8">
             <form class="card card-sm" method="GET">
                 <div class="card-body row no-gutters align-items-center">
                     <div class="col-auto">
@@ -10,16 +25,12 @@
                     <!--end of col-->
                     <div class="col">
                         <label>Search</label>
-                        <input class="form-control form-control-lg form-controlborderless" type="text" name="search"
-                               value="@ViewBag.SearchString"
-                               placeholder="Search topics or keywords">
+                        <input class="form-control form-control-lg form-controlborderless"
+                               type="text" name="search" value="@ViewBag.SearchString" placeholder="Search topics or keywords">
                     </div>
                     <!--end of col-->
                     <div class="col-auto">
-                        <button class="btn btn-lg btn-success"
-                                type="submit">
-                            Search
-                        </button>
+                        <button class="btn btn-lg btn-success" type="submit">Search</button>
                     </div>
                     <!--end of col-->
                 </div>
@@ -51,15 +62,14 @@
 
         @if (User.IsInRole("Admin") || User.IsInRole("Partner"))
         {
-            <br />
-            <br />
+<br />
+                <br />
 
-            <div>
-                <a class="btn btn-success" href="/Products/New">Add new product</a>
-            </div>
+                                <div>
+                                    <a class="btn btn-success" href="/Products/New">Add new product</a>
+                                </div>
 
-            <br />
-        }
+                                                <br />}
 
     </div>
 </div>
@@ -67,25 +77,19 @@
 <br />
 <br />
 
-@if (TempData.ContainsKey("message"))
-{
-    <h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
-}
+<div class="row my-flex-center">
 
-@foreach (KendamaShop.Models.Product prod in ViewBag.Products)
-{
-    <div>
-
-    </div>
-
-    <div class="panel page-article">
+    @foreach (KendamaShop.Models.Product prod in ViewBag.Products)
+    {
+    <div class="card shadow my-card-margin" style="width: 30%">
         @Html.Partial("ProductInfo", prod)
-        <div class="panel-footer article-panel-footer around">
-            <a class="btn btn-sm btn-success full-width"
-               href="/Products/Show/@prod.ProductId">Show product</a>
+        <div class="card-footer">
+            <a class="btn btn-sm btn-success full-width" href="/Products/Show/@prod.ProductId">Show product</a>
         </div>
     </div>
-}
+    }
+
+</div>
 
 <div>
     <nav aria-label="Page navigation">
@@ -93,44 +97,40 @@
             <li>
                 @if (ViewBag.search != "")
                 {
-                    <a href="/Products/Index?page=1&search=@ViewBag.SearchString"
-                       aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                }
-                else
-                {
-                    <a href="/Products/Index?page=1" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                }
+    <a href="/Products/Index?page=1&search=@ViewBag.SearchString"
+       aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+    </a> }
+else
+{
+<a href="/Products/Index?page=1" aria-label="Previous">
+    <span aria-hidden="true">&laquo;</span>
+</a>}
             </li>
             @for (int i = 1; i <= ViewBag.lastPage; i++)
             {
                 if (ViewBag.search != "")
                 {
-                    <li>
-                        <a href="/Products/Index?page=@i&search=@ViewBag.SearchString">@(i)</a>
-                    </li>
-                }
-                else
-                {
-                    <li><a href="/Products/Index?page=@i">@(i)</a></li>
-                }
-            }
+<li>
+    <a href="/Products/Index?page=@i&search=@ViewBag.SearchString">@(i)</a>
+</li>
+ }
+else
+{
+<li><a href="/Products/Index?page=@i">@(i)</a></li>
+}
+}
             <li>
                 @if (ViewBag.search != "")
                 {
-                    <a href="/Products/Index?page=@(ViewBag.lastPage)&search=@ViewBag.SearchString" arialabel="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                }
-                else
-                {
-                    <a href="/Products/Index?page=@(ViewBag.lastPage)" arialabel="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                }
+    <a href="/Products/Index?page=@(ViewBag.lastPage)&search=@ViewBag.SearchString" arialabel="Next">
+        <span aria-hidden="true">&raquo;</span>
+    </a> }
+else
+{
+<a href="/Products/Index?page=@(ViewBag.lastPage)" arialabel="Next">
+    <span aria-hidden="true">&raquo;</span>
+</a>}
             </li>
         </ul>
     </nav>

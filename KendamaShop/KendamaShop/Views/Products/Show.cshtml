@@ -1,70 +1,84 @@
 ﻿@model KendamaShop.Models.Product
 
-<h1>@ViewBag.Message</h1>
+<br />
+
+<ol class="breadcrumb">
+    <li><h3>View product</h3></li>
+</ol>
+
+@if (TempData.ContainsKey("message"))
+{
+<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
+}
 
 <a class="btn btn-info" href="/Products/Index">Back to products page</a>
-<br/> <br/>
+<br />
+<br />
 
-<div class="panel panel-default">
-    @Html.Partial("ProductInfo", Model)
-    @if ((ViewBag.isPartner && ViewBag.currentUser == Model.PartnerId) || ViewBag.isAdmin)
-    {
-    <div class="panel-footer">
-        <a class="btn btn-sm btn-success pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
-        <form method="post" action="/Orders/AddToCart/@Model.ProductId">
-            @Html.HttpMethodOverride(HttpVerbs.Put)
-            <button class="btn btn-sm btn-success">Add to Cart</button>
-        </form>
-        <form method="post" action="/Products/Delete/@Model.ProductId">
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <button class="btn btn-sm btn-danger pull-right">Delete product</button>
-        </form>
-        <div class="clearfix"></div>
+<div class="row">
+    <div class="col-4">
+        <div class="card shadow" style="width: 18rem;">
+            @Html.Partial("ProductInfo", Model)
+            @if ((ViewBag.isPartner && ViewBag.currentUser == Model.PartnerId) || ViewBag.isAdmin)
+            {
+            <div class="card-footer">
+                <div class="my-flex-space-between">
+                    <a class="btn btn-sm btn-success pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
+                    <form method="post" action="/Orders/AddToCart/@Model.ProductId">
+                        @Html.HttpMethodOverride(HttpVerbs.Put)
+                        <button class="btn btn-sm btn-success">Add to Cart</button>
+                    </form>
+                </div>
+            </div>      
+            }
+        </div>
     </div>
-    }
-</div>
 
-@foreach(KendamaShop.Models.Review review in Model.Reviews)
-{
-<div class="panel panel-default">
+    <div class="col-8">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header">
+                        Leave a review:
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="/Products/Show">
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                            <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                            <label name="Content">Review content</label>
+                            <br />
+                            <textarea class="form-control" name="Content"></textarea>
+                            <br />
+                            <label name="Stars">Stars (0-5 stars):</label>
+                            <br />
+                            <input type="number" name="Stars" min="0" max="5" />
+
+                            <button class="btn btn-sm btn-success" type="submit">Post review</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @foreach (KendamaShop.Models.Review review in Model.Reviews)
+        {
+<div class="card shadow" style="margin-top: 10px;">
     @Html.Partial("ReviewInfo", review)
     @if (ViewBag.isAdmin || review.UserId == ViewBag.currentUser)
     {
-        <div class="panel-footer">
+    <div class="card-footer">
+        <div class="my-flex-space-between">
             <a class="btn btn-sm btn-success pull-left" href="/Reviews/Edit/@review.ReviewId">Edit review</a>
             <form method="post" action="/Reviews/Delete/@review.ReviewId">
                 @Html.HttpMethodOverride(HttpVerbs.Delete)
                 <button type="submit" class="btn btn-sm btn-danger pull-right">Delete Review</button>
             </form>
-            <div class="clearfix"></div>
         </div>
-    }
+    </div>          
+        }
 
-</div>
-}
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div class="panel">
-                <form method="post" action="/Products/Show">
-                    <div class="panel-body">
-                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-
-                        <input type="hidden" name="ProductId" value="@Model.ProductId" />
-                        <label name="Content">Review content</label>
-                        <br />
-                        <textarea class="form-control" name="Content"></textarea>
-                        <br />
-                        <label name="Stars">Stars (0-5 stars):</label>
-                        <br />
-                        <input type="number" name="Stars" min="0" max="5" />
-
-                        <button class="btn btn-succes" type="submit">Post review</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+</div>}
     </div>
 </div>

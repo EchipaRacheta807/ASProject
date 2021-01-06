@@ -1,9 +1,22 @@
 ﻿@model KendamaShop.Models.Product
 
-<h1>@ViewBag.Message</h1>
+@{ 
+    ViewBag.Title = "Edit product";
+}
+
+<br />
+
+<ol class="breadcrumb">
+    <li><h3>@ViewBag.Title</h3></li>
+</ol>
+
+@if (TempData.ContainsKey("message"))
+{
+<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
+}
 
 <form method="post" action="/Products/Edit/@Model.ProductId">
-    @Html.ValidationSummary(false, "", new { @class = "text-danger"})
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
     @Html.HttpMethodOverride(HttpVerbs.Put)
 
@@ -26,9 +39,23 @@
 
     @Html.Label("Rating", "Product rating (0-5 stars)")
     <br />
-    @Html.EditorFor(m => m.Rating, new { htmlAttributes = new { @type = "number", @min = "0", @max = "5", 
-                    @step = "0.5", @value = "0", @class="form-control" } })
+    @Html.EditorFor(m => m.Rating, new
+    {
+        htmlAttributes = new
+        {
+            @type = "number",
+            @min = "0",
+            @max = "5",
+            @step = "0.5",
+            @value = "0",
+            @class = "form-control"
+        }
+    })
     <br /> <br />
 
     <button class="btn btn-sm btn-success" type="submit">Save</button>
+    <form method="post" action="/Products/Delete/@Model.ProductId">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button class="btn btn-sm btn-danger pull-right">Delete product</button>
+    </form>
 </form>
