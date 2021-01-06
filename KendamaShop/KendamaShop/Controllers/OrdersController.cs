@@ -40,9 +40,7 @@ namespace KendamaShop.Controllers
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("not null branch");
                 var order = db.Orders.Find(id);
-                //var products = db.Orders.Include("Products").Include("Category").Include("User").Where(o => o.OrderId == id).SelectMany(o => o.Products);
                 var products = db.OrderProducts.Include("Product").Include("Category").Include("User").Where(op => op.OrderId == id).Select(op => op.Product);
                 var orderPCount = db.OrderProducts.Where(op => op.OrderId == id);
                 IDictionary<int, int> PCount = new Dictionary<int, int>();
@@ -151,9 +149,11 @@ namespace KendamaShop.Controllers
             foreach (var order in orders)
             {
                 float cost = 0;
-                foreach (var product in order.OrderProducts)
+                var products = db.OrderProducts.Include("Product").Where(op => op.OrderId == order.OrderId).Select(op => op.Product);
+
+                foreach (var product in products)
                 {
-                    cost += product.Product.Price;
+                    cost += product.Price;
                 }
 
                 TotalOrdersCost[order.OrderId] = cost;
