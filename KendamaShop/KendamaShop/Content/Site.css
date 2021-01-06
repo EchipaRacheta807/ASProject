@@ -1,8 +1,4 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
-
+﻿
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -35,4 +31,9 @@ textarea {
 
 .navbar a:hover {
     color: #5cb85c !important;
+}
+
+.my-ml-auto {
+    left: auto !important;
+    right: 0px;
 }

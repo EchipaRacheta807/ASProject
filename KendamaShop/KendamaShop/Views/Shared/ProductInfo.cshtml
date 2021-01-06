@@ -1,20 +1,10 @@
-﻿<div class="panel-heading">@Model.Title</div>
-<div class="panel-body">
-    Product description:
-    <strong>@Model.Description</strong>
-    <br />
-    Product price:
-    <strong>$@Model.Price</strong>
-    <br/>
-    Product rating:
-    <strong>@Model.Rating</strong>
-    </br>
-    Product category:
-    <strong>@Model.Category.CategoryName</strong>
-    <br />
-    <i class="glyphicon glyphicon-user"></i><i>Product added by: </i>
+﻿<div class="card-header">@Model.Title</div>
+<img src="data:image;base64,@Convert.ToBase64String(Model.ImageFile)" class="card-img-top" style="height: auto; max-height:200px; width: auto; margin: 0 auto;">
+<div class="card-body">
+    Product description: <strong>@Model.Description</strong>
+    <br>Product price: <strong>$@Model.Price</strong>
+    <br>Product rating: <strong>@Model.Rating</strong>
+    <br>Product category: <strong>@Model.Category.CategoryName</strong>
+    <br> <i class="glyphicon glyphicon-user"></i><i>Product added by: </i>
     <strong> @Model.User.UserName </strong>
-    <br />
-    Imagine:
-    <img src="data:image;base64,@Convert.ToBase64String(Model.ImageFile)" style="height: 300px" />
 </div>

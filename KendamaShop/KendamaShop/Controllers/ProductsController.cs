@@ -12,7 +12,7 @@ namespace KendamaShop.Controllers
     {
         public ApplicationDbContext db = new ApplicationDbContext();
 
-        private int _perPage = 3;
+        private int _perPage = 10;
         private static string sortingCriterium = "date_asc";
 
         // GET: Products
