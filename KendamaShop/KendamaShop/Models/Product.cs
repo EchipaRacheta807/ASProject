@@ -45,7 +45,7 @@ namespace KendamaShop.Models
         /*[DataType(DataType.Upload)]
         [Display(Name = "Upload File")]
         [Required(ErrorMessage = "Please choose image file to upload.")]*/
-        public byte[] ImageFile { get; set; }
+        public string ImageFile { get; set; }
 
         // 0 when a partner tries to add it. There will be a separated index page with only
         // products that haven't been accepted yet, and an admin will be able to mark them as accepted
