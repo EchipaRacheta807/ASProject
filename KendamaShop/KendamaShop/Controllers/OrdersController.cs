@@ -14,6 +14,7 @@ namespace KendamaShop.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         private static IDictionary<int, int> ProductCount = new Dictionary<int, int>();
+        private IDictionary<int, float> TotalOrdersCost = new Dictionary<int, float>();
 
         // GET: Orders
         public ActionResult Index()
@@ -22,6 +23,7 @@ namespace KendamaShop.Controllers
             string currentUser = User.Identity.GetUserId();
             var orders = db.Orders.Include("OrderProducts").Where(order => order.UserId == currentUser);
             ViewBag.Orders = orders;
+            GetAllOrdersCosts();
             return View();
         }
 
@@ -38,9 +40,7 @@ namespace KendamaShop.Controllers
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("not null branch");
                 var order = db.Orders.Find(id);
-                //var products = db.Orders.Include("Products").Include("Category").Include("User").Where(o => o.OrderId == id).SelectMany(o => o.Products);
                 var products = db.OrderProducts.Include("Product").Include("Category").Include("User").Where(op => op.OrderId == id).Select(op => op.Product);
                 var orderPCount = db.OrderProducts.Where(op => op.OrderId == id);
                 IDictionary<int, int> PCount = new Dictionary<int, int>();
@@ -140,5 +140,27 @@ namespace KendamaShop.Controllers
             var products = db.Products.Where(product => ProductCount.Keys.Contains(product.ProductId)).ToArray();
             return products;
         }
+
+        [NonAction]
+        public void GetAllOrdersCosts()
+        {
+            var orders = db.Orders.ToArray();
+
+            foreach (var order in orders)
+            {
+                float cost = 0;
+                var products = db.OrderProducts.Include("Product").Where(op => op.OrderId == order.OrderId);
+
+                foreach (var product in products)
+                {
+                    cost += product.Product.Price * product.Quantity;
+                }
+
+                TotalOrdersCost[order.OrderId] = cost;
+            }
+
+            ViewBag.TotalOrdersCost = TotalOrdersCost;
+        }
+
     }
 }

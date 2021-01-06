@@ -7,8 +7,7 @@
     <strong>Product count: </strong>
     <strong>@Model.OrderProducts.Count</strong>
     <br />
-    <strong>Order price: </strong>
-    <br />
-    <strong>Product rating: </strong>
-    </br>
+
+    <strong>Order price:</strong>
+    <strong>@ViewBag.TotalOrdersCost[Model.OrderId]</strong>
 </div>
