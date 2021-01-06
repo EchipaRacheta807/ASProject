@@ -2,6 +2,8 @@
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -204,6 +206,13 @@ namespace KendamaShop.Controllers
             {
                 product.ImageFile = new byte[ImageFileBase.ContentLength];
                 ImageFileBase.InputStream.Read(product.ImageFile, 0, ImageFileBase.ContentLength);
+            }
+            else
+            {
+                string imagefilePath = "C:\\Users\\Alex\\Desktop\\ASProject\\KendamaShop\\KendamaShop\\Images\\default_image.jpg";
+                System.Drawing.Image image = System.Drawing.Image.FromFile(imagefilePath);
+                ImageConverter imageConverter = new ImageConverter();
+                product.ImageFile = (byte[])imageConverter.ConvertTo(image, typeof(byte[]));
             }
 
             try

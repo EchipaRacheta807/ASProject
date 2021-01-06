@@ -42,6 +42,9 @@ namespace KendamaShop.Models
 
         public DateTime Date { get; set; }
 
+        /*[DataType(DataType.Upload)]
+        [Display(Name = "Upload File")]
+        [Required(ErrorMessage = "Please choose image file to upload.")]*/
         public byte[] ImageFile { get; set; }
 
         // 0 when a partner tries to add it. There will be a separated index page with only

@@ -54,7 +54,6 @@
     <label>Selectati categoria</label>
     @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.Categ, "Value", "Text"),
     "Select the category", new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.CategoryId, "", new { @class = "text-danger" })
     <br />
     <br />
 
