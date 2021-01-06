@@ -152,6 +152,7 @@ namespace KendamaShop.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "User,Partner,Admin")]
         [HttpPost]
         public ActionResult Show(Review review)
         {
