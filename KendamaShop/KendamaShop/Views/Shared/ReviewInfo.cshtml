@@ -1,9 +1,10 @@
 ﻿
 <div class="card-header">@Model.Stars stars</div>
 <div class="card-body">
-    Data: <strong>@Model.Date</strong>
+    <i class="fas fa-calendar-alt"></i> Data: <strong>@Model.Date</strong>
     <br />
-    Content: <strong>@Model.Content</strong>
-    <i class="glyphicon glyphicon-user"></i><i>Review written by: </i>
+    <i class="fas fa-file-alt"></i> Content: <strong>@Model.Content</strong>
+    <br />
+    <i class="fas fa-user"></i> Review written by: </i>
     <strong> @Model.User.UserName </strong>
 </div>

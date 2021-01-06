@@ -1,4 +1,7 @@
-﻿
+﻿body{
+    font-family: Poppins;
+}
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -36,4 +39,13 @@ textarea {
 .my-ml-auto {
     left: auto !important;
     right: 0px;
+}
+
+.my-flex-center {
+    justify-content: center;
+    align_items: center;
+}
+
+.my-card-margin {
+    margin: 10px auto;
 }

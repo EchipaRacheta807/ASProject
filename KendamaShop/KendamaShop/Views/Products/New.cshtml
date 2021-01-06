@@ -1,6 +1,15 @@
 ﻿@model KendamaShop.Models.Product
 
-<h2>Add product</h2>
+<br />
+
+<ol class="breadcrumb">
+    <li><h3>Add product</h3></li>
+</ol>
+
+@if (TempData.ContainsKey("message"))
+{
+<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
+}
 
 <form method="post" action="/Products/New" enctype="multipart/form-data">
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -16,7 +25,7 @@
     <br /> <br />
 
     @Html.Label("Image", "Product Image")
-    <input type="file" name="ImageFileBase" class="form-control" />
+    <input type="file" name="ImageFileBase" class="form-control-file" />
 
     <br /> <br />
 
@@ -30,7 +39,7 @@
             @min = "0",
             @step = "0.01",
             @value = "0",
-                            @class = "form-control"
+            @class = "form-control"
         }
     })
     <br /> <br />
@@ -46,14 +55,14 @@
             @max = "5",
             @step = "0.5",
             @value = "0",
-                            @class = "form-control"
+            @class = "form-control"
         }
     })
     <br /> <br />
 
     <label>Selectati categoria</label>
     @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.Categ, "Value", "Text"),
-    "Select the category", new { @class = "form-control" })
+            "Select the category", new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.CategoryId, "", new { @class = "text-danger" })
     <br />
     <br />

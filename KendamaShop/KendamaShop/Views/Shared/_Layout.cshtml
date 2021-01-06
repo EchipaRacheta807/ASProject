@@ -6,11 +6,13 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
+        <div class="container-fluid">
             @Html.ActionLink("Kendama Shop", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -18,21 +20,19 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/Produts/Index">List all Products</a>
+                        @Html.ActionLink("List Products", "Index", "Products", routeValues: null, htmlAttributes: new { @class = "nav-link active" })
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Categories/Index">List all Categories</a>
+                        @Html.ActionLink("List Categories", "Index", "Categories", routeValues: null, htmlAttributes: new { @class = "nav-link active" })
                     </li>
                     @if (User.IsInRole("Partner") || User.IsInRole("Admin") || User.IsInRole("User"))
                     {
-                        <li class="nav-item">@Html.ActionLink("View Orders", "Index", "Orders", new { @class = "nav-link active" })</li>
-                        <li class="nav-item">@Html.ActionLink("View Cart", "Show", "Orders", new { @class = "nav-link active" })</li>
-                    }
+        <li class="nav-item">@Html.ActionLink("View Orders", "Index", "Orders", routeValues: null, htmlAttributes: new { @class = "nav-link active" })</li>
+                        <li class="nav-item">@Html.ActionLink("View Cart", "Show", "Orders", routeValues: null, htmlAttributes: new { @class = "nav-link active" })</li>}
                     @if (User.IsInRole("Admin"))
                     {
-                        <li class="nav-item">@Html.ActionLink("List Users", "Index", "Users", new { @class = "nav-link active" })</li>
-                        <li class="nav-item">@Html.ActionLink("Pending products", "Pending", "Products", new { @class = "nav-link active" })</li>
-                    }
+        <li class="nav-item">@Html.ActionLink("List Users", "Index", "Users", routeValues: null, htmlAttributes: new { @class = "nav-link active" })</li>
+                        <li class="nav-item">@Html.ActionLink("Pending products", "Pending", "Products", routeValues: null, htmlAttributes: new { @class = "nav-link active" })</li>}
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -70,6 +70,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://kit.fontawesome.com/5c258581eb.js" crossorigin="anonymous"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

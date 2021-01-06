@@ -3,20 +3,36 @@
     ViewBag.Title = "Show Category";
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>@ViewBag.Title : @Model.CategoryName</h2>
 
-<p>@Model.CategoryName</p>
-
-@foreach (KendamaShop.Models.Product prod in ViewBag.Products)
+@if (User.IsInRole("Admin"))
 {
-    <div class="panel page-article">
-        @Html.Partial("ProductInfo", prod)
-        <div class="panel-footer article-panel-footer around">
-            <a class="btn btn-sm btn-success full-width"
-               href="/Products/Show/@prod.ProductId">Show product</a>
-        </div>
-    </div>
+    <form method="post" action="/Categories/Delete/@Model.CategoryId">
+
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+
+        <button class="btn btn-success" type="submit">Delete Category</button>
+
+    </form>
+    <br />
 }
+<a class="btn btn-success" href="/Categories/Index/">Show all categories</a>
+
+<br />
+<hr />
+<br />
+
+<div class="row my-flex-center">
+    @foreach (KendamaShop.Models.Product prod in ViewBag.Products)
+    {
+        <div class="card shadow my-card-margin">
+            @Html.Partial("ProductInfo", prod)
+            <div class="card-footer">
+                <a class="btn btn-sm btn-success full-width" href="/Products/Show/@prod.ProductId">Show product</a>
+            </div>
+        </div>
+    }
+</div>
 
 <div>
     <nav aria-label="Page navigation">
@@ -39,21 +55,4 @@
         </ul>
     </nav>
 </div>
-
-@if (User.IsInRole("Admin"))
-{
-    <form method="post" action="/Categories/Delete/@Model.CategoryId">
-
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-
-        <button class="btn btn-success" type="submit">Delete Category</button>
-
-    </form>
-    <br />
-}
-<a class="btn btn-success" href="/Categories/Index/">Show all categories</a>
-
-<br />
-<hr />
-<br />
 

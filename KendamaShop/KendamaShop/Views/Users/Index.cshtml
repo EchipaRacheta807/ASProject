@@ -1,28 +1,35 @@
-﻿@{
+﻿@{ ViewBag.Title = "User list:"; }
 
-    ViewBag.Title = "User list:";
-}
+<br />
 
 <ol class="breadcrumb">
     <li><h3>@ViewBag.Title</h3></li>
 </ol>
 
-@foreach (var user in ViewBag.UsersList)
+@if (TempData.ContainsKey("message"))
 {
-    <div class="panel-heading">Username: @user.UserName</div>
-    <div class="panel-body">
+<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
+}
+
+
+<div class="row my-flex-center">
+    @foreach (var user in ViewBag.UsersList)
+    {
+<div class="card shadow my-card-margin" style="width: 30%">
+    <div class="card-header">
+        Username: @user.UserName
+    </div>
+    <div class="card-body">
         <i class="glyphicon glyphicon-envelope"></i> User email: <span class="label label-default">@user.Email</span>
         <br /><br />
         @if (@user.PhoneNumber != null)
         {
-            <i class="glyphicon glyphicon-phone"></i>@:User phone number:<span class="label label-default">@user.PhoneNumber</span>
-        }
+<i class="glyphicon glyphicon-phone"></i>@:User phone number:<span class="label label-default">@user.PhoneNumber</span>
+}
     </div>
-    <div class="panel-footer">
+    <div class="card-footer">
         <a class="btn btn-sm btn-success" href="/Users/Edit/@user.Id"> Edit User</a>
         <a class="btn btn-sm btn-success" href="/Users/Show/@user.Id"> View User</a>
     </div>
-
-    <br />
-    <br />
-}
+</div>}
+</div>

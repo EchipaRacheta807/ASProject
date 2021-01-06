@@ -1,5 +1,17 @@
 ﻿@model KendamaShop.Models.Review
 
+@{ ViewBag.Title = "Edit review"; }
+
+<br />
+
+<ol class="breadcrumb">
+    <li><h3>@ViewBag.Title</h3></li>
+</ol>
+
+@if (TempData.ContainsKey("message"))
+{
+<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>}
+
 <form method="post" action="/Reviews/Edit/@Model.ReviewId">
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 

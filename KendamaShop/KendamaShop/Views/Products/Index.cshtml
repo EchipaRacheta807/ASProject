@@ -1,4 +1,19 @@
-﻿<div class="container">
+﻿@{ 
+    ViewBag.Title = "List Users";
+}
+
+<br />
+
+<ol class="breadcrumb">
+    <li><h3>@ViewBag.Title</h3></li>
+</ol>
+
+@if (TempData.ContainsKey("message"))
+{
+    <h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
+}
+
+<div class="container">
     <br />
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8">
@@ -62,15 +77,11 @@
 <br />
 <br />
 
-@if (TempData.ContainsKey("message"))
-{
-<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>}
-
-<div class="row" style="justify-content: center; align-items: center;">
+<div class="row my-flex-center">
 
     @foreach (KendamaShop.Models.Product prod in ViewBag.Products)
     {
-    <div class="card" style="width: 18rem; margin: 10px auto">
+    <div class="card shadow my-card-margin" style="width: 30%">
         @Html.Partial("ProductInfo", prod)
         <div class="card-footer">
             <a class="btn btn-sm btn-success full-width" href="/Products/Show/@prod.ProductId">Show product</a>
@@ -90,11 +101,11 @@
        aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
     </a> }
-                else
-                {
-    <a href="/Products/Index?page=1" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-    </a>}
+else
+{
+<a href="/Products/Index?page=1" aria-label="Previous">
+    <span aria-hidden="true">&laquo;</span>
+</a>}
             </li>
             @for (int i = 1; i <= ViewBag.lastPage; i++)
             {
@@ -102,22 +113,24 @@
                 {
 <li>
     <a href="/Products/Index?page=@i&search=@ViewBag.SearchString">@(i)</a>
-</li> }
-                else
-                {
-<li><a href="/Products/Index?page=@i">@(i)</a></li>                }
-            }
+</li>
+ }
+else
+{
+<li><a href="/Products/Index?page=@i">@(i)</a></li>
+}
+}
             <li>
                 @if (ViewBag.search != "")
                 {
     <a href="/Products/Index?page=@(ViewBag.lastPage)&search=@ViewBag.SearchString" arialabel="Next">
         <span aria-hidden="true">&raquo;</span>
     </a> }
-                else
-                {
-    <a href="/Products/Index?page=@(ViewBag.lastPage)" arialabel="Next">
-        <span aria-hidden="true">&raquo;</span>
-    </a>}
+else
+{
+<a href="/Products/Index?page=@(ViewBag.lastPage)" arialabel="Next">
+    <span aria-hidden="true">&raquo;</span>
+</a>}
             </li>
         </ul>
     </nav>

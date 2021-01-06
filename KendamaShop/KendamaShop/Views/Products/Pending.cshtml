@@ -1,19 +1,25 @@
-﻿@{
-    ViewBag.Title = "Products awaiting confirmation";
-}
+﻿@{ ViewBag.Title = "Products awaiting confirmation"; }
 
-<h1>@ViewBag.Message</h1>
+<br />
 
-<h2>@ViewBag.Title</h2>
+<ol class="breadcrumb">
+    <li><h3>@ViewBag.Title</h3></li>
+</ol>
 
-@foreach (KendamaShop.Models.Product product in ViewBag.Products)
+@if (TempData.ContainsKey("message"))
 {
-<div class="panel panel-default">
-    @Html.Partial("ProductInfo", product)
-    <div class="panel-footer">
-        <a class="btn btn-sm btn-danger pull-left" href="/Products/Decline/@product.ProductId">Decline product</a>
-        <a class="btn btn-sm btn-success pull-right" href="/Products/Accept/@product.ProductId">Accept product</a>
-        <div class="clearfix" />
-    </div>
-</div>
+<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
 }
+
+<div class="row my-flex-center">
+
+    @foreach (KendamaShop.Models.Product prod in ViewBag.Products)
+    {
+<div class="card shadow my-card-margin" style="width: 30%">
+    @Html.Partial("ProductInfo", prod)
+    <div class="card-footer">
+        <a class="btn btn-sm btn-success full-width" href="/Products/Show/@prod.ProductId">Show product</a>
+    </div>
+</div>}
+
+</div>

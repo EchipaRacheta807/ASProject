@@ -4,21 +4,24 @@
 
 <h2>@ViewBag.Title</h2>
 
-@foreach (KendamaShop.Models.Product product in ViewBag.Products)
+@if (TempData.ContainsKey("message"))
 {
-    <div class="panel panel-default">
-        @Html.Partial("ProductInfo", product)
-        <strong>Quantity:</strong>@ViewBag.ProductCount[product.ProductId]
-        <br />
-        <div class="panel-footer">
-            <a class="btn btn-sm btn-success" href="/Products/Show/@product.ProductId">Show product</a>
-        </div>
-    </div>
+<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
 }
+
+<div class="row my-flex-center">
+    @foreach (KendamaShop.Models.Product prod in ViewBag.Products)
+    {
+<div class="card shadow my-card-margin" style="width: 30%">
+    @Html.Partial("ProductInfo", prod)
+    <div class="card-footer">
+        <a class="btn btn-sm btn-success full-width" href="/Products/Show/@prod.ProductId">Show product</a>
+    </div>
+</div>}
+</div>
 
 @if (ViewBag.ToBuy)
 {
-    <form method="post" action="/Orders/Buy">
-        <button class="btn btn-sm btn-success" type="submit">Buy</button>
-    </form>
-}
+<form method="post" action="/Orders/Buy">
+    <button class="btn btn-sm btn-success" type="submit">Buy</button>
+</form>}
