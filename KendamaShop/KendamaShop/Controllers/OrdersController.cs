@@ -149,11 +149,11 @@ namespace KendamaShop.Controllers
             foreach (var order in orders)
             {
                 float cost = 0;
-                var products = db.OrderProducts.Include("Product").Where(op => op.OrderId == order.OrderId).Select(op => op.Product);
+                var products = db.OrderProducts.Include("Product").Where(op => op.OrderId == order.OrderId);
 
                 foreach (var product in products)
                 {
-                    cost += product.Price;
+                    cost += product.Product.Price * product.Quantity;
                 }
 
                 TotalOrdersCost[order.OrderId] = cost;
