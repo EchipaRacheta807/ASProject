@@ -9,16 +9,13 @@
 
 @if (TempData.ContainsKey("message"))
 {
-<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
+<h3 class="alert alert-info" role="alert">@TempData["message"]</h3>
 }
 
 @if (User.IsInRole("Admin"))
 {
 <a class="btn btn-primary" href="/Categories/New">Add category</a>
-                <br />
-                                <br />
 }
-
 
 <a class="btn btn-primary" href="/Products/Index">Show all products</a>
 
@@ -33,10 +30,13 @@
         <strong>@category.CategoryName</strong>
     </div>
     <div class="card-footer">
-        <a class="btn btn-success" href="/Categories/Show/@category.CategoryId">View Category</a>
-        @if (User.IsInRole("Admin"))
-        {
-<a class="btn btn-success" href="/Categories/Edit/@category.CategoryId">Edit Category</a>}
+        <div class="my-flex-space-between">
+            <a class="btn btn-success" href="/Categories/Show/@category.CategoryId">View Category</a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-success" href="/Categories/Edit/@category.CategoryId">Edit Category</a>
+             }
+        </div>
     </div>
 </div>}
 </div>

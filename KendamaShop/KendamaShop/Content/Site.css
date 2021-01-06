@@ -48,6 +48,8 @@ textarea {
 
 .my-card-margin {
     margin: 10px auto;
+    width: 30%;
+    overflow: hidden;
 }
 
 .my-flex-space-between {
