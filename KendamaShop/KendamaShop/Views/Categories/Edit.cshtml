@@ -12,7 +12,8 @@
 
 @if (TempData.ContainsKey("message"))
 {
-<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>}
+<h3 class="alert alert-info" role="alert">@TempData["message"]</h3>
+}
 
 <form method="post" action="/Categories/Edit/@Model.CategoryId">
 

@@ -3,11 +3,11 @@
 <h1>@ViewBag.Message</h1>
 
 <h2>@ViewBag.Title</h2>
+<strong>Total: </strong>$@ViewBag.TotalPrice
 
 @if (TempData.ContainsKey("message"))
 {
-<h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
-}
+<h3 class="alert alert-info" role="alert">@TempData["message"]</h3>}
 
 <div class="row my-flex-center">
     @foreach (KendamaShop.Models.Product prod in ViewBag.Products)
@@ -20,8 +20,9 @@
 </div>}
 </div>
 
+
 @if (ViewBag.ToBuy)
 {
 <form method="post" action="/Orders/Buy">
-    <button class="btn btn-sm btn-success" type="submit">Buy</button>
+    <button class="btn btn-success" type="submit">Buy</button>
 </form>}

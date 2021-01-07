@@ -13,7 +13,7 @@
 
 @if (TempData.ContainsKey("message"))
 {
-    <h3 class="alert alert-info" role="alert">@ViewBag.Message</h3>
+<h3 class="alert alert-info" role="alert">@TempData["message"]</h3>
 }
 
 @using (Html.BeginForm(actionName: "Edit", controllerName: "Users", routeValues: new { id = @Model.Id }))

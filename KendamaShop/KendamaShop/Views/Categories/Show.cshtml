@@ -3,7 +3,15 @@
     ViewBag.Title = "Show Category";
 }
 
-<h2>@ViewBag.Title : @Model.CategoryName</h2>
+
+<ol class="breadcrumb">
+    <li><h3>@ViewBag.Title : @Model.CategoryName</h3></li>
+</ol>
+
+@if (TempData.ContainsKey("message"))
+{
+<h3 class="alert alert-info" role="alert">@TempData["message"]</h3>
+}
 
 @if (User.IsInRole("Admin"))
 {
