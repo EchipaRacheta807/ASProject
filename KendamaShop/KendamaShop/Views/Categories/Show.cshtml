@@ -33,6 +33,10 @@
 <div class="row my-flex-center">
     @foreach (KendamaShop.Models.Product prod in ViewBag.Products)
     {
+        if (prod.Accepted == false)
+        {
+            continue;
+        }
         <div class="card shadow my-card-margin">
             @Html.Partial("ProductInfo", prod)
             <div class="card-footer">

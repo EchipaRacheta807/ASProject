@@ -54,8 +54,9 @@
     <br /> <br />
 
     <button class="btn btn-sm btn-success" type="submit">Save</button>
+</form>
+<br />
     <form method="post" action="/Products/Delete/@Model.ProductId">
         @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button class="btn btn-sm btn-danger pull-right">Delete product</button>
+        <button class="btn btn-sm btn-danger" type="submit">Delete product</button>
     </form>
-</form>
