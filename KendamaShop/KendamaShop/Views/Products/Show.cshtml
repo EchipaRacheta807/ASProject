@@ -19,18 +19,21 @@
     <div class="col-4">
         <div class="card shadow" style="width: 18rem;">
             @Html.Partial("ProductInfo", Model)
-            @if ((ViewBag.isPartner && ViewBag.currentUser == Model.PartnerId) || ViewBag.isAdmin)
-            {
+           
             <div class="card-footer">
                 <div class="my-flex-space-between">
-                    <a class="btn btn-sm btn-success pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
-                    <form method="post" action="/Orders/AddToCart/@Model.ProductId">
+                    
+
+                     @if ((ViewBag.isPartner && ViewBag.currentUser == Model.PartnerId) || ViewBag.isAdmin)
+                     {
+                        <a class="btn btn-sm btn-success pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
+                     }
+                     <form method="post" action="/Orders/AddToCart/@Model.ProductId">
                         @Html.HttpMethodOverride(HttpVerbs.Put)
-                        <button class="btn btn-sm btn-success">Add to Cart</button>
+                        <button class="btn btn-sm btn-success" type="submit">Add to Cart</button>
                     </form>
                 </div>
             </div>      
-            }
         </div>
     </div>
 

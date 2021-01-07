@@ -1,9 +1,6 @@
 ﻿<div class="card-header">
     <strong>
-        @Model.Title (@if (ViewBag.ProductCount != null)
-        {
-            @ViewBag.ProductCount[Model.ProductId]
-        })
+        @Model.Title
     </strong>
 </div>
 <img src="data:image;base64,@Model.ImageFile" class="card-img-top" style="height: auto; max-height:200px; width: auto; margin: 0 auto;">
