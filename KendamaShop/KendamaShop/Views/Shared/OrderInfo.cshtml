@@ -4,10 +4,10 @@
     </strong>
 </div>
 <div class="card-body">
-    <strong>Product count: </strong>
-    <strong>@Model.OrderProducts.Count</strong>
+    <i class="fas fa-calculator"></i> <strong>Product count: </strong>
+    @ViewBag.OrderPCount[Model.OrderId]
     <br />
 
-    <strong>Order price:</strong>
-    <strong>@ViewBag.TotalOrdersCost[Model.OrderId]</strong>
+    <i class="fas fa-money-bill-wave"></i> <strong>Order price:</strong>
+    $@ViewBag.TotalOrdersCost[Model.OrderId]
 </div>

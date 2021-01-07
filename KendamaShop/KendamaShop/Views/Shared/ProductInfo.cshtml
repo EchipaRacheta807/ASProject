@@ -1,4 +1,11 @@
-﻿<div class="card-header">@Model.Title</div>
+﻿<div class="card-header">
+    <strong>
+        @Model.Title (@if (ViewBag.ProductCount != null)
+        {
+            @ViewBag.ProductCount[Model.ProductId]
+        })
+    </strong>
+</div>
 <img src="data:image;base64,@Model.ImageFile" class="card-img-top" style="height: auto; max-height:200px; width: auto; margin: 0 auto;">
 <div class="card-body">
     <i class="fas fa-align-justify"></i> <strong>Product description:</strong> @Model.Description
