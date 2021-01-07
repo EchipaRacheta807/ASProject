@@ -58,3 +58,15 @@ textarea {
     justify-content: space-between;
     align-items: flex-start;
 }
+
+.my-flex-space-evenly {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+.my-search-bar {
+    max-width: 55%;
+    margin-left: 5px;
+}
