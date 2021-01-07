@@ -18,7 +18,11 @@
 <div class="card shadow my-card-margin" style="width: 30%">
     @Html.Partial("ProductInfo", prod)
     <div class="card-footer">
-        <a class="btn btn-sm btn-success full-width" href="/Products/Show/@prod.ProductId">Show product</a>
+        <div class="my-flex-space-between">
+            <a class="btn btn-sm btn-success" href="/Products/Show/@prod.ProductId">Show product</a>
+            <a class="btn btn-sm btn-success" href="/Products/Accept/@prod.ProductId">Accept product</a> 
+        </div>
+
     </div>
 </div>}
 

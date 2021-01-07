@@ -28,10 +28,21 @@
                      {
                         <a class="btn btn-sm btn-success pull-left" href="/Products/Edit/@Model.ProductId">Edit product</a>
                      }
-                     <form method="post" action="/Orders/AddToCart/@Model.ProductId">
-                        @Html.HttpMethodOverride(HttpVerbs.Put)
-                        <button class="btn btn-sm btn-success" type="submit">Add to Cart</button>
-                    </form>
+                     @if ((Model.Accepted))
+                     {
+                         <form method="post" action="/Orders/AddToCart/@Model.ProductId">
+                            @Html.HttpMethodOverride(HttpVerbs.Put)
+                            <button class="btn btn-sm btn-success" type="submit">Add to Cart</button>
+                        </form>
+                     }
+                     else
+                     {
+                         <form method="post" action="/Products/Delete/@Model.ProductId">
+                             @Html.HttpMethodOverride(HttpVerbs.Delete)
+                             <button class="btn btn-sm btn-danger">Decline</button>
+                         </form>
+                     }
+
                 </div>
             </div>      
         </div>
